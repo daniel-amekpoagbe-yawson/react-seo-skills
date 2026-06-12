@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.8] - 2026-06-12
+
+### Added
+
+- Training-data warning block in `SKILL.md`: frameworks may have shipped
+  breaking changes since the agent's training cut-off, so it must read the
+  installed versions and current docs before implementing.
+- New core rules in `SKILL.md`: verify framework versions before writing code,
+  ask the developer for real project details (site name, domain, OG image,
+  social handles, locales, keywords) instead of guessing, and keep SEO code
+  DRY via shared `SEO` components, layout-level defaults, and schema helpers.
+
+### Fixed
+
+- CRA detection now checks for `react-scripts` in dependencies (the previous
+  `create-react-app` signal never matched real CRA projects).
+- App Router dynamic metadata example: `params` is typed as
+  `Promise<{ slug: string }>` to match Next.js 15+, with explicit guidance for
+  Next.js 14 and earlier.
+- All JSON-LD serialization examples escape `<` via
+  `JSON.stringify(...).replace(/</g, '\\u003c')` to prevent `</script>`
+  breakout (XSS) from CMS- or user-provided data, with a matching rule in
+  `structured-data.md` and `react-helmet-async.md`.
+- `prioritizeSeoTags` rule reworded to match the shared `SEO` component
+  (always include it — no-op on CSR and React 19).
+- Removed an unused variable from the JavaScript `SEO` example in `language.md`.
+
+### Changed
+
+- Added SEO-relevant performance quick checks (LCP, lazy-loading,
+  render-blocking scripts) to `validation.md`, referenced from `SKILL.md`.
+- Replaced version- and date-pinned `react-helmet-async` claims with `v3+`
+  and removed a dated keyword example.
+
 ## [0.0.7] - 2026-06-12
 
 ### Added
@@ -52,7 +86,8 @@ before starting — see [CONTRIBUTING.md](CONTRIBUTING.md).
 - Zero-dependency installer (`bin/install.js`) supporting Cursor, Claude Code,
   and Codex, with `--global` and `--force` options.
 
-[Unreleased]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.7...HEAD
+[Unreleased]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.8...HEAD
+[0.0.8]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/releases/tag/v0.0.5
