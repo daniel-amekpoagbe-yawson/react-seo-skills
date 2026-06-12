@@ -75,13 +75,14 @@ type Props = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await fetchPost(params.slug)
+  const { slug } = await params // Next.js 15+: params is a Promise
+  const post = await fetchPost(slug)
 
   return {
     title: `${post.title} — Blog`,
     description: post.excerpt,
     alternates: {
-      canonical: `https://example.com/blog/${params.slug}`,
+      canonical: `https://example.com/blog/${slug}`,
     },
     openGraph: {
       title: post.title,
