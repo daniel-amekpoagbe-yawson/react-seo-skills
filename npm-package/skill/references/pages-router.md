@@ -152,6 +152,18 @@ export default function BlogPost({ post }: { post: Post }) {
 }
 ```
 
+### hreflang (Multilingual)
+
+Add alternate language links inside `<Head>`:
+
+```tsx
+<link rel="alternate" hrefLang="en" href="https://example.com/about" />
+<link rel="alternate" hrefLang="fr" href="https://example.com/fr/about" />
+<link rel="alternate" hrefLang="x-default" href="https://example.com/about" />
+```
+
+---
+
 ## sitemap.xml
 
 Pages Router doesn't have a built-in sitemap API. The standard approach is a
@@ -243,8 +255,6 @@ export default function handler(req, res) {
 
 ---
 
-## Validation Tools
+## Validation
 
-| What | Tool |
-|---|---|
-| Meta tags & OG | https://www.opengraph.xyz |
+See [validation.md](validation.md).

@@ -116,6 +116,23 @@ export const metadata: Metadata = {
 }
 ```
 
+### hreflang (Multilingual)
+
+```tsx
+export const metadata: Metadata = {
+  alternates: {
+    canonical: 'https://example.com/about',
+    languages: {
+      en: 'https://example.com/about',
+      fr: 'https://example.com/fr/about',
+      'x-default': 'https://example.com/about',
+    },
+  },
+}
+```
+
+---
+
 ## sitemap.ts
 
 Place at `app/sitemap.ts`. Next.js generates `/sitemap.xml` automatically.
@@ -205,9 +222,6 @@ rules: [
 
 ---
 
-## Validation Tools
+## Validation
 
-| What | Tool |
-|---|---|
-| Meta tags & OG | https://www.opengraph.xyz |
-| Structured data | https://search.google.com/test/rich-results |
+See [validation.md](validation.md).
