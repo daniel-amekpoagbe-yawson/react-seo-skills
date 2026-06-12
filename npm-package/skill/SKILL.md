@@ -9,7 +9,7 @@ description: >
   JavaScript or TypeScript to the project language.
 ---
 
-# Next.js & React SEO Skill
+# React SEO Skills
 
 SEO and GEO (AI visibility) for Next.js and React applications. Works in Cursor,
 Claude Code, and Codex via native skill discovery.
