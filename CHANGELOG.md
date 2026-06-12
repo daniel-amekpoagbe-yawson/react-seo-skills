@@ -86,8 +86,8 @@ before starting — see [CONTRIBUTING.md](CONTRIBUTING.md).
 - Zero-dependency installer (`bin/install.js`) supporting Cursor, Claude Code,
   and Codex, with `--global` and `--force` options.
 
-[Unreleased]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.8...HEAD
-[0.0.8]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.7...v0.0.8
-[0.0.7]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.6...v0.0.7
-[0.0.6]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.5...v0.0.6
-[0.0.5]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/releases/tag/v0.0.5
+[Unreleased]: https://github.com/daniel-amekpoagbe/react-seo-skills/compare/v0.0.8...HEAD
+[0.0.8]: https://github.com/daniel-amekpoagbe/react-seo-skills/compare/v0.0.7...v0.0.8
+[0.0.7]: https://github.com/daniel-amekpoagbe/react-seo-skills/compare/v0.0.6...v0.0.7
+[0.0.6]: https://github.com/daniel-amekpoagbe/react-seo-skills/compare/v0.0.5...v0.0.6
+[0.0.5]: https://github.com/daniel-amekpoagbe/react-seo-skills/releases/tag/v0.0.5

@@ -27,7 +27,7 @@ The design is intentionally a **thin entry point + linked references**. Keep
 ## Local setup
 
 ```bash
-git clone https://github.com/daniel-amekpoagbe-yawson/react-seo-skills.git
+git clone https://github.com/daniel-amekpoagbe/react-seo-skills.git
 cd react-seo-skills
 npm test          # runs the installer test suite (Node 18+, no deps)
 ```

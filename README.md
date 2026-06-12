@@ -256,7 +256,7 @@ improvements. Start with [CONTRIBUTING.md](CONTRIBUTING.md) and please read the
 [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ```bash
-git clone https://github.com/daniel-amekpoagbe-yawson/react-seo-skills.git
+git clone https://github.com/daniel-amekpoagbe/react-seo-skills.git
 cd react-seo-skills
 npm test
 ```
