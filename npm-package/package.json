@@ -3,5 +3,14 @@
   "version": "0.0.1",
   "description": "SEO skill for Next.js and React apps",
   "license": "MIT",
-  "author": "Daniel Amekpoagbe <daniel@amekpoagbe.com>"
+  "author": "Daniel Amekpoagbe <daniel@amekpoagbe.com>",
+  "bin": {
+    "nextjs-react-seo-skill": "./bin/install.js"
+  },
+  "files": [
+    "bin/",
+    "skill/",
+    "README.md",
+    "LICENSE"
+  ]
 }
