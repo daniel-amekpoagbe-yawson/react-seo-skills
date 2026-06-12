@@ -1,7 +1,7 @@
 # react-helmet-async
 
 Official reference for [react-helmet-async](https://www.npmjs.com/package/react-helmet-async)
-(v3.0.0). Use this package for all Vite and plain React SEO — never `react-helmet`.
+(v3+). Use this package for all Vite and plain React SEO — never `react-helmet`.
 
 Thread-safe fork of React Helmet. Requires `HelmetProvider` to encapsulate state per
 request. Peer dependency: `react` ^16.6.0 || ^17.0.0 || ^18.0.0 || ^19.0.0.
@@ -20,7 +20,11 @@ request. Peer dependency: `react` ^16.6.0 || ^17.0.0 || ^18.0.0 || ^19.0.0.
    thread-safe and is unmaintained.
 6. **Use `<Helmet>` per route** for title, meta, link, and script tags.
 7. **Use `titleTemplate` + `defaultTitle`** on `<Helmet>` for site-wide title patterns.
-8. **Use `prioritizeSeoTags`** on SSR/prerender apps running React 16–18 only.
+8. **Add `prioritizeSeoTags` to the shared `SEO` component.** It surfaces title,
+   canonical, and OG tags early in `<head>` on SSR/prerendered React 16–18 apps,
+   and is a harmless no-op on CSR apps and React 19.
+9. **Escape `<` in JSON-LD** — serialize with
+   `JSON.stringify(jsonLd).replace(/</g, '\\u003c')`, never bare `JSON.stringify`.
 
 ---
 
@@ -126,7 +130,9 @@ renders as `About Us — Site Name`.
 
 ## JSON-LD via Helmet
 
-Place structured data inside `<Helmet>` as a script tag:
+Place structured data inside `<Helmet>` as a script tag. Always escape `<` in
+the serialized JSON — a `</script>` sequence in CMS- or user-provided data would
+otherwise break out of the tag (see [structured-data.md](structured-data.md)):
 
 ```tsx
 <Helmet>
@@ -136,7 +142,7 @@ Place structured data inside `<Helmet>` as a script tag:
       '@type': 'Organization',
       name: 'Company Name',
       url: 'https://example.com',
-    })}
+    }).replace(/</g, '\\u003c')}
   </script>
 </Helmet>
 ```
@@ -224,7 +230,7 @@ const page = `<!DOCTYPE html>
 | 16.6–18 | Collects instances, deduplicates, updates DOM manually | Required — manages per-request state |
 | 19+ | Renders native JSX; React hoists tags to `<head>` | Transparent passthrough |
 
-v3.0.0 detects React version at runtime. The same `<Helmet>` API works on all
+v3+ detects the React version at runtime. The same `<Helmet>` API works on all
 supported versions — no code changes needed when upgrading React.
 
 ---
@@ -305,7 +311,9 @@ export function SEO({
       ))}
 
       {jsonLd && (
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+        </script>
       )}
     </Helmet>
   )
@@ -380,7 +388,9 @@ export function SEO({
       ))}
 
       {jsonLd && (
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+        </script>
       )}
     </Helmet>
   )
@@ -406,7 +416,7 @@ Usage on a page:
 
 | | `react-helmet` | `react-helmet-async` |
 |---|---|---|
-| Maintenance | Abandoned (archived) | Active (v3.0.0, Mar 2026) |
+| Maintenance | Abandoned (archived) | Actively maintained (v3+) |
 | Thread safety | No (`react-side-effect`) | Yes (`HelmetProvider` context) |
 | React 19 | Broken / hydration issues | Native hoisting support |
 | SSR | `Helmet.renderStatic()` | `context` prop on `HelmetProvider` |

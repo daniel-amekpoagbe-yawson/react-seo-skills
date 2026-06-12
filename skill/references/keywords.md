@@ -46,7 +46,7 @@ Group keywords by **search intent**, not just topic similarity.
 |---|---|---|
 | Informational | User wants to learn | "what is server side rendering" |
 | Navigational | User wants a specific site/page | "Next.js docs routing" |
-| Commercial | User is researching before buying | "best Next.js hosting 2025" |
+| Commercial | User is researching before buying | "best Next.js hosting" |
 | Transactional | User is ready to act | "hire Next.js developer Ghana" |
 
 **Clustering rules:**

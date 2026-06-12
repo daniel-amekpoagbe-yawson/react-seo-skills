@@ -95,14 +95,13 @@ export function SEO({
   jsonLd,
   hrefLangs,
 }) {
-  const fullTitle = `${title} — ${SITE_NAME}`
-
   return (
     <Helmet prioritizeSeoTags>
       <title>{title}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={canonical} />
-      {/* OG, Twitter, hreflang, jsonLd — same as TS version */}
+      {/* OG, Twitter, hreflang, jsonLd — same as the TS version in
+          react-helmet-async.md, with all type annotations removed */}
     </Helmet>
   )
 }

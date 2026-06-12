@@ -51,7 +51,7 @@ When SEO is requested for a Vite or plain React app:
 |---|---|
 | `app/layout.tsx` or `next.config.js` | Next.js — [app-router.md](app-router.md) or [pages-router.md](pages-router.md) |
 | `vite.config.ts` + `index.html` | Vite + React — this file |
-| `create-react-app` in `package.json` | CRA — this file |
+| `react-scripts` in `package.json` dependencies | CRA — this file |
 
 ---
 

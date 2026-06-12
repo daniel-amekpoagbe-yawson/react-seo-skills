@@ -71,11 +71,11 @@ Use when the page is driven by data (blog posts, product pages, user profiles).
 import type { Metadata } from 'next'
 
 type Props = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params // Next.js 15+: params is a Promise
+  const { slug } = await params
   const post = await fetchPost(slug)
 
   return {
@@ -95,6 +95,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 ```
+
+**Check the project's `next` version in `package.json` before writing this code:**
+
+- **Next.js 15+:** `params` is a `Promise`. Type it as `Promise<{ slug: string }>`
+  and `await` it (as shown above).
+- **Next.js 14 and earlier:** `params` is a plain object. Type it as
+  `{ slug: string }` and do not `await` it.
 
 ### Default Metadata in layout.tsx
 Set site-wide fallback metadata in the root layout. Page-level metadata merges

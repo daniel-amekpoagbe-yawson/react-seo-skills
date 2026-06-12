@@ -15,7 +15,12 @@ and does not interfere with page markup.
 4. Match `@type` to actual page content — never use `FAQPage` without real Q&A.
 5. Place the script in the page component body (App Router, Vite) or page
    component (Pages Router). Both render in the DOM for crawlers.
-6. Validate with Rich Results Test after every change.
+6. **Escape `<` when serializing JSON-LD.** Always write
+   `JSON.stringify(jsonLd).replace(/</g, '\\u003c')` — never a bare
+   `JSON.stringify(jsonLd)`. A `</script>` sequence inside CMS- or user-provided
+   data would otherwise break out of the script tag (XSS). Apply this in every
+   pattern below.
+7. Validate with Rich Results Test after every change.
 
 ---
 
@@ -71,7 +76,10 @@ export default function AboutPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        // .replace() prevents </script> breakout from untrusted data
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
       />
       {/* page content */}
     </>
@@ -97,7 +105,9 @@ export default function AboutPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
       />
       {/* page content */}
     </>
@@ -344,3 +354,4 @@ Common errors to check:
 - Wrong `@type` for the content
 - Relative URLs instead of absolute URLs in `image`, `url`, `@id` fields
 - `datePublished` not in ISO 8601 format
+- Bare `JSON.stringify` without the `.replace(/</g, '\\u003c')` escape (XSS risk)

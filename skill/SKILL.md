@@ -37,7 +37,8 @@ Claude Code, and Codex via native skill discovery.
 7. **Use framework conventions.** Do not invent custom abstractions unless asked.
 8. **Do not over-tag.** Prioritize title, description, canonical, OG, and JSON-LD.
 9. **Flag performance issues** that affect ranking: unoptimized images, render-blocking
-   scripts, poor LCP.
+   scripts, poor LCP. See the performance quick checks in
+   [validation.md](references/validation.md).
 
 ---
 
@@ -58,7 +59,7 @@ Always run in this sequence:
 | `app/layout.tsx` or `app/layout.jsx` | Next.js App Router | [app-router.md](references/app-router.md) |
 | `pages/_app.tsx` or `pages/_app.jsx` | Next.js Pages Router | [pages-router.md](references/pages-router.md) |
 | `vite.config.ts` or `vite.config.js` | Vite + React | [react-vite.md](references/react-vite.md) |
-| `create-react-app` in dependencies | CRA (treat as Vite SPA) | [react-vite.md](references/react-vite.md) |
+| `react-scripts` in `package.json` dependencies | CRA (treat as Vite SPA) | [react-vite.md](references/react-vite.md) |
 
 If both `app/` and `pages/` exist, App Router takes precedence in Next.js 13+.
 

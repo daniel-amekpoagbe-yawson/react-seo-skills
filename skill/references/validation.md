@@ -31,6 +31,20 @@ without checking.
 
 ---
 
+## Performance Quick Checks
+
+Core Web Vitals affect ranking. After SEO work, also check:
+
+- [ ] Hero / LCP image is **not** lazy-loaded and uses a modern format
+      (`next/image` in Next.js; explicit `width`/`height` elsewhere)
+- [ ] Images below the fold are lazy-loaded (`loading="lazy"`)
+- [ ] No render-blocking third-party scripts in `<head>` — use `defer`, `async`,
+      or `next/script` with an appropriate strategy
+- [ ] Run [PageSpeed Insights](https://pagespeed.web.dev) — flag LCP > 2.5s,
+      CLS > 0.1, INP > 200ms
+
+---
+
 ## Common Failures
 
 | Symptom | Likely cause |
