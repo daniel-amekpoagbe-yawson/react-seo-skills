@@ -1,15 +1,3 @@
-# nextjs-react-seo-skill
+# react-seo-skills
 
-SEO and GEO skill for Next.js apps.
-
-## Install
-
-```bash
-npx nextjs-react-seo-skill
-```
-
-Installs to `./skills/nextjs-react-seo-skill/`.
-
-## License
-
-MIT
+Install paths: `.cursor/skills/react-seo-skills/`, `.claude/skills/react-seo-skills/`, `.agents/skills/react-seo-skills/`
