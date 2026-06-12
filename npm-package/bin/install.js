@@ -37,7 +37,7 @@ Options:
   --cursor    Install for Cursor only
   --claude    Install for Claude Code only
   --codex     Install for Codex only
-  --global    Install to user-level skill directories (~/.cursor, ~/.claude, ~/.codex)
+  --global    Install to user home skills dirs skill directories (~/.cursor, ~/.claude, ~/.codex)
   --force     Overwrite existing installation
   --help      Show this help message
 
