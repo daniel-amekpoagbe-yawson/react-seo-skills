@@ -27,7 +27,7 @@ const TARGETS = {
 
 function printHelp() {
   console.log(`
-react-seo-skills — install SEO and GEO skill for Cursor, Claude Code, and Codex
+react-seo-skills — install SEO/GEO skill for Cursor, Claude Code, and Codex
 
 Usage:
   npx react-seo-skills [options]
@@ -37,7 +37,7 @@ Options:
   --cursor    Install for Cursor only
   --claude    Install for Claude Code only
   --codex     Install for Codex only
-  --global    Install to user home skills dirs skill directories (~/.cursor, ~/.claude, ~/.codex)
+  --global    Install to user-level skill directories (~/.cursor, ~/.claude, ~/.codex)
   --force     Overwrite existing installation
   --help      Show this help message
 
@@ -171,9 +171,12 @@ function main() {
   if (installed) {
     console.log('\nWhat was installed:')
     console.log('  SKILL.md                      main skill file')
+    console.log('  references/language.md         JS vs TS detection rules')
     console.log('  references/keywords.md         keyword clustering & validation')
     console.log('  references/app-router.md       App Router metadata, sitemap, robots')
     console.log('  references/pages-router.md     Pages Router metadata, sitemap, robots')
+    console.log('  references/react-helmet-async.md  react-helmet-async install & API')
+    console.log('  references/react-vite.md       Vite + React workflow, sitemap, robots')
     console.log('  references/structured-data.md  Schema.org JSON-LD patterns')
     console.log('  references/geo.md              GEO / AI visibility (llms.txt, /ai page)')
     console.log('  references/validation.md       Post-implementation validation tools')
@@ -190,6 +193,7 @@ function main() {
     console.log('  Codex:       restart the CLI after install so it rescans skill directories')
   }
   console.log('  See README for per-agent setup details.')
+  console.log('\n  Created by Daniel Amekpoagbe — https://www.amekpoagbe.com/\n')
 }
 
 main()

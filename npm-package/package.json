@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "description": "SEO skill for Next.js and React apps",
   "license": "MIT",
-  "author": "Daniel Amekpoagbe <daniel@amekpoagbe.com>",
+  "author": {
+    "name": "Daniel Amekpoagbe",
+    "email": "work@amekpoagbe.com",
+    "url": "https://www.amekpoagbe.com/"
+  },
   "bin": {
     "react-seo-skills": "./bin/install.js"
   },
@@ -12,5 +16,13 @@
     "skill/",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "homepage": "https://www.amekpoagbe.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/react-seo-skills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/react-seo-skills/issues"
+  }
 }
