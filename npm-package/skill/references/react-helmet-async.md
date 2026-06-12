@@ -333,3 +333,81 @@ export default function App() {
   )
 }
 ```
+
+### JavaScript (`src/components/SEO.jsx`)
+
+```jsx
+// src/components/SEO.jsx
+import { Helmet } from 'react-helmet-async'
+
+const SITE_NAME = 'Site Name'
+const TITLE_TEMPLATE = `%s — ${SITE_NAME}`
+const DEFAULT_OG_IMAGE = 'https://example.com/og/default.png'
+
+export function SEO({
+  title,
+  description,
+  canonical,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogType = 'website',
+  noIndex = false,
+  jsonLd,
+  hrefLangs,
+}) {
+  const fullTitle = `${title} — ${SITE_NAME}`
+
+  return (
+    <Helmet prioritizeSeoTags>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <link rel="canonical" href={canonical} />
+      {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={canonical} />
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:type" content={ogType} />
+      <meta property="og:site_name" content={SITE_NAME} />
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={ogImage} />
+
+      {hrefLangs?.map(({ lang, href }) => (
+        <link key={lang} rel="alternate" hrefLang={lang} href={href} />
+      ))}
+
+      {jsonLd && (
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      )}
+    </Helmet>
+  )
+}
+
+export function SiteHelmetDefaults() {
+  return (
+    <Helmet defaultTitle={SITE_NAME} titleTemplate={TITLE_TEMPLATE} />
+  )
+}
+```
+
+Usage on a page:
+
+```tsx
+<SEO title="About Us" description="..." canonical="https://example.com/about" />
+// Renders: <title>About Us — Site Name</title>
+```
+
+---
+
+## Why Not react-helmet?
+
+| | `react-helmet` | `react-helmet-async` |
+|---|---|---|
+| Maintenance | Abandoned (archived) | Active (v3.0.0, Mar 2026) |
+| Thread safety | No (`react-side-effect`) | Yes (`HelmetProvider` context) |
+| React 19 | Broken / hydration issues | Native hoisting support |
+| SSR | `Helmet.renderStatic()` | `context` prop on `HelmetProvider` |
+| Default export | Yes (legacy) | Named exports only |
