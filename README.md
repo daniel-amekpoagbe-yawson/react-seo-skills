@@ -9,6 +9,14 @@ An agent skill that teaches **Cursor**, **Claude Code**, and **Codex** how to im
 
 From keyword strategy to metadata, Schema.org JSON-LD, sitemaps, robots.txt, and `llms.txt` — with stack-aware patterns for App Router, Pages Router, and Vite SPAs.
 
+> [!IMPORTANT]
+> **This is a CLI installer, not a runtime dependency.**
+> Run `npx react-seo-skills` — **do not** `npm install react-seo-skills`.
+> `npm install` only downloads the package; it never copies the skill into your
+> agent's directory, so nothing will appear to happen. If you added it to your
+> dependencies by mistake, remove it with `npm uninstall react-seo-skills` and
+> run `npx react-seo-skills` instead.
+
 ```bash
 npx react-seo-skills
 ```
@@ -23,6 +31,8 @@ When you ask the agent an SEO question, it discovers the skill from the
 `description` in `SKILL.md` and reads the relevant reference files on demand.
 
 Nothing is imported into your code. You're installing **knowledge**, not a library.
+That's why you run it with `npx` (which executes the installer) rather than
+`npm install` (which would only download it without copying anything).
 
 ---
 

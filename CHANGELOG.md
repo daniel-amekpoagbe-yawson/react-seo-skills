@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.7] - 2026-06-12
+
+### Added
+
+- README callout clarifying that this is a CLI installer, not a runtime
+  dependency: run `npx react-seo-skills`, do not `npm install` it.
+
 ## [0.0.6] - 2026-06-12
 
 ### Added
@@ -45,6 +52,7 @@ before starting — see [CONTRIBUTING.md](CONTRIBUTING.md).
 - Zero-dependency installer (`bin/install.js`) supporting Cursor, Claude Code,
   and Codex, with `--global` and `--force` options.
 
-[Unreleased]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.6...HEAD
+[Unreleased]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.7...HEAD
+[0.0.7]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/releases/tag/v0.0.5
