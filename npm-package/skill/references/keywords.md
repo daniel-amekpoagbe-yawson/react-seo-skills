@@ -6,6 +6,17 @@ schema types.
 
 ---
 
+## Rules
+
+1. **Match project language** for any code output — see [language.md](language.md).
+2. **One primary keyword per page.** Never target two competing intents on one URL.
+3. **Cluster by search intent**, not topic similarity alone.
+4. **Validate before committing** — check volume, difficulty, and SERP competition.
+5. **Check cannibalization** — no two pages on the same site share a primary keyword.
+6. **Map clusters to implementation** — primary keyword → title/H1, secondary → description/body.
+
+---
+
 ## Step 1 — Ideation
 
 Gather seed keywords using a combination of:

@@ -2,7 +2,7 @@
 
 Applies to Vite + React apps (`vite.config.ts` or `vite.config.js`, `index.html`,
 `src/main.tsx` or `src/main.jsx`). Also covers plain React SPAs and CRA.
-Match file extensions to project language — see `language.md`.
+Match file extensions to project language — see [language.md](language.md).
 
 **Metadata library:** [react-helmet-async](react-helmet-async.md) — read that file
 for install commands, API reference, SSR patterns, and the `SEO` component.
@@ -11,12 +11,12 @@ for install commands, API reference, SSR patterns, and the `SEO` component.
 
 ## Rules
 
-1. **Match project language** — see `language.md`. Use `main.jsx` /
+1. **Match project language** — see [language.md](language.md). Use `main.jsx` /
    `SEO.jsx` in JS projects, `main.tsx` / `SEO.tsx` in TS projects.
 2. **Never** suggest `next/metadata`, `generateMetadata`, `sitemap.ts`, or
    `robots.ts` — those are Next.js-only APIs.
 3. **Always install `react-helmet-async@latest`** and follow
-   `react-helmet-async` before writing SEO code.
+   [react-helmet-async.md](react-helmet-async.md) before writing SEO code.
 4. **Never** use `react-helmet` — uninstall it if present.
 5. **Always** wrap the app in `HelmetProvider` at the root.
 6. **Always** use the shared `SEO` component on every indexable route.
@@ -37,7 +37,7 @@ When SEO is requested for a Vite or plain React app:
 | 2 | Run `npm install react-helmet-async@latest` (or pnpm/yarn/bun equivalent) |
 | 3 | Remove `react-helmet` if installed |
 | 4 | Add `HelmetProvider` to `src/main.tsx` or `src/main.jsx` |
-| 5 | Create `src/components/SEO.tsx` or `SEO.jsx` — see `react-helmet-async` |
+| 5 | Create `src/components/SEO.tsx` or `SEO.jsx` — see [react-helmet-async.md](react-helmet-async.md) |
 | 6 | Add `<SiteHelmetDefaults />` in `App.tsx` or `App.jsx` |
 | 7 | Add `<SEO />` to every indexable route |
 | 8 | Create `public/robots.txt`, `public/sitemap.xml`, `public/llms.txt` |
