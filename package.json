@@ -29,13 +29,13 @@
     "url": "https://www.amekpoagbe.com/"
   },
   "license": "MIT",
-  "homepage": "https://www.amekpoagbe.com/",
+  "homepage": "https://github.com/daniel-amekpoagbe-yawson/react-seo-skills#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/react-seo-skills.git"
+    "url": "git+https://github.com/daniel-amekpoagbe-yawson/react-seo-skills.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/react-seo-skills/issues"
+    "url": "https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/issues"
   },
   "bin": {
     "react-seo-skills": "./bin/install.js"
@@ -48,8 +48,5 @@
   ],
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "react-helmet-async": "^1.5.0"
   }
 }
