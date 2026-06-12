@@ -4,8 +4,45 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 
+const pkg = require('../package.json')
+
 const SKILL_DIR_NAME = 'react-seo-skills'
 const SOURCE_DIR = path.join(__dirname, '..', 'skill')
+
+// --- Terminal UI helpers (zero dependencies) ---------------------------------
+const useColor =
+  Boolean(process.stdout.isTTY) &&
+  !process.env.NO_COLOR &&
+  process.env.TERM !== 'dumb'
+
+const wrap = (open, close) => (s) =>
+  useColor ? `\x1b[${open}m${s}\x1b[${close}m` : String(s)
+
+const c = {
+  bold: wrap(1, 22),
+  dim: wrap(2, 22),
+  red: wrap(31, 39),
+  green: wrap(32, 39),
+  yellow: wrap(33, 39),
+  blue: wrap(34, 39),
+  magenta: wrap(35, 39),
+  cyan: wrap(36, 39),
+}
+
+const stripAnsi = (s) => s.replace(/\x1b\[[0-9;]*m/g, '')
+const visibleLen = (s) => stripAnsi(s).length
+const pad = (s, width) => s + ' '.repeat(Math.max(0, width - visibleLen(s)))
+
+function box(lines) {
+  const width = Math.max(...lines.map(visibleLen))
+  const border = c.dim
+  const top = border('╭' + '─'.repeat(width + 2) + '╮')
+  const bottom = border('╰' + '─'.repeat(width + 2) + '╯')
+  const body = lines.map(
+    (line) => border('│ ') + pad(line, width) + border(' │')
+  )
+  return [top, ...body, bottom].join('\n')
+}
 
 const TARGETS = {
   cursor: {
@@ -26,28 +63,34 @@ const TARGETS = {
 }
 
 function printHelp() {
-  console.log(`
-react-seo-skills — install SEO/GEO skill for Cursor, Claude Code, and Codex
-
-Usage:
-  npx react-seo-skills [options]
-
-Options:
-  --all       Install for all agents (default)
-  --cursor    Install for Cursor only
-  --claude    Install for Claude Code only
-  --codex     Install for Codex only
-  --global    Install to user-level skill directories (~/.cursor, ~/.claude, ~/.codex)
-  --force     Overwrite existing installation
-  --dry-run   Show what would be installed without writing any files
-  --help      Show this help message
-
-Examples:
-  npx react-seo-skills
-  npx react-seo-skills --global
-  npx react-seo-skills --cursor --claude
-  npx react-seo-skills --codex --force
-`)
+  const opt = (flag, desc) => `  ${c.cyan(pad(flag, 11))} ${c.dim(desc)}`
+  const ex = (cmd) => `  ${c.dim('$')} ${cmd}`
+  console.log(
+    [
+      '',
+      `${c.bold('react-seo-skills')} ${c.dim('— SEO/GEO skills for Cursor, Claude Code & Codex')}`,
+      '',
+      c.bold('Usage:'),
+      `  ${c.dim('$')} npx react-seo-skills [options]`,
+      '',
+      c.bold('Options:'),
+      opt('--all', 'Install for all agents (default)'),
+      opt('--cursor', 'Install for Cursor only'),
+      opt('--claude', 'Install for Claude Code only'),
+      opt('--codex', 'Install for Codex only'),
+      opt('--global', 'Install to user-level skill dirs (~/.cursor, …)'),
+      opt('--force', 'Overwrite an existing installation'),
+      opt('--dry-run', 'Preview without writing any files'),
+      opt('--help', 'Show this help message'),
+      '',
+      c.bold('Examples:'),
+      ex('npx react-seo-skills'),
+      ex('npx react-seo-skills --global'),
+      ex('npx react-seo-skills --cursor --claude'),
+      ex('npx react-seo-skills --codex --force'),
+      '',
+    ].join('\n')
+  )
 }
 
 function parseArgs(argv) {
@@ -165,8 +208,6 @@ function main() {
 
   checkNodeVersion()
 
-  console.log('\n react-seo-skills\n')
-
   const scope = options.global ? 'global' : 'project'
   const cwd = process.cwd()
   const results = []
@@ -181,52 +222,90 @@ function main() {
     results.push({ agent, label: target.label, ...result })
   }
 
-  if (options.dryRun) {
-    console.log('(dry run — no files written)\n')
+  // Header
+  console.log()
+  console.log(
+    box([
+      `${c.bold(c.cyan('react-seo-skills'))}  ${c.dim('v' + pkg.version)}`,
+      c.dim('SEO & GEO skills for your AI coding agent'),
+    ])
+  )
+  console.log()
+
+  const heading = options.dryRun
+    ? `${c.bold('Preview')} ${c.dim(`· ${scope} scope · no files written`)}`
+    : `${c.bold('Installing')} ${c.dim(`· ${scope} scope`)}`
+  console.log(`  ${heading}`)
+  console.log()
+
+  // Status rows
+  const STATUS = {
+    installed: { glyph: c.green('✓'), word: c.green('Installed') },
+    'would-install': { glyph: c.cyan('→'), word: c.cyan('Would add') },
+    skipped: { glyph: c.yellow('•'), word: c.yellow('Skipped') },
   }
 
-  const ACTIONS = {
-    installed: { prefix: '✓', label: 'Installed' },
-    'would-install': { prefix: '→', label: 'Would install' },
-    skipped: { prefix: '·', label: 'Skipped (exists)' },
-  }
-
+  const labelWidth = Math.max(...results.map((r) => r.label.length))
   for (const result of results) {
-    const action = ACTIONS[result.status]
-    console.log(`${action.prefix} ${result.label}: ${action.label} at ${formatPath(result.path)}`)
-    if (result.status === 'skipped') {
-      console.log(`  Re-run with --force to overwrite.`)
-    }
+    const s = STATUS[result.status]
+    const note =
+      result.status === 'skipped'
+        ? c.dim('already exists — use --force')
+        : c.dim(formatPath(result.path))
+    console.log(
+      `  ${s.glyph}  ${pad(c.bold(result.label), labelWidth + 2)}${pad(s.word, 12)}${note}`
+    )
   }
 
   const installed = results.some((result) => result.status === 'installed')
+  const wouldInstall = results.some((r) => r.status === 'would-install')
 
-  if (installed) {
-    console.log('\nWhat was installed:')
-    console.log('  SKILL.md                      main skill file')
-    console.log('  references/language.md         JS vs TS detection rules')
-    console.log('  references/keywords.md         keyword clustering & validation')
-    console.log('  references/app-router.md       App Router metadata, sitemap, robots')
-    console.log('  references/pages-router.md     Pages Router metadata, sitemap, robots')
-    console.log('  references/react-helmet-async.md  react-helmet-async install & API')
-    console.log('  references/react-vite.md       Vite + React workflow, sitemap, robots')
-    console.log('  references/structured-data.md  Schema.org JSON-LD patterns')
-    console.log('  references/geo.md              GEO / AI visibility (llms.txt, /ai page)')
-    console.log('  references/validation.md       Post-implementation validation tools')
+  if (installed || wouldInstall) {
+    const files = [
+      ['SKILL.md', 'entry point — rules & audit workflow'],
+      ['references/language.md', 'JS vs TS detection'],
+      ['references/keywords.md', 'keyword clustering & validation'],
+      ['references/app-router.md', 'Next.js App Router'],
+      ['references/pages-router.md', 'Next.js Pages Router'],
+      ['references/react-vite.md', 'Vite + React / SPA'],
+      ['references/react-helmet-async.md', 'Helmet install & API'],
+      ['references/structured-data.md', 'Schema.org JSON-LD'],
+      ['references/geo.md', 'AI visibility (llms.txt, /ai)'],
+      ['references/validation.md', 'post-implementation checks'],
+    ]
+    const nameWidth = Math.max(...files.map(([name]) => name.length))
+    console.log()
+    console.log(`  ${c.bold('Skill files')} ${c.dim(`(${files.length})`)}`)
+    for (const [name, desc] of files) {
+      console.log(`    ${c.dim('•')} ${pad(name, nameWidth + 2)}${c.dim(desc)}`)
+    }
   }
 
-  console.log('\nNext steps:')
+  // Next steps
+  const steps = []
   if (options.agents.has('cursor')) {
-    console.log('  Cursor:      skills auto-discover from SKILL.md — no extra config needed')
+    steps.push(['Cursor', 'auto-discovers from SKILL.md — no extra config'])
   }
   if (options.agents.has('claude')) {
-    console.log('  Claude Code: skills auto-discover from ~/.claude/skills or .claude/skills')
+    steps.push(['Claude Code', 'auto-discovers from .claude/skills'])
   }
   if (options.agents.has('codex')) {
-    console.log('  Codex:       restart the CLI after install so it rescans skill directories')
+    steps.push(['Codex', 'restart the CLI so it rescans skill directories'])
   }
-  console.log('  See README for per-agent setup details.')
-  console.log('\n  Created by Daniel Amekpoagbe — https://www.amekpoagbe.com/\n')
+
+  console.log()
+  console.log(`  ${c.bold('Next steps')}`)
+  const stepWidth = Math.max(...steps.map(([label]) => label.length))
+  for (const [label, desc] of steps) {
+    console.log(`    ${c.cyan(pad(label, stepWidth + 2))}${c.dim(desc)}`)
+  }
+  console.log(`    ${c.dim('See the README for per-agent setup details.')}`)
+
+  console.log()
+  console.log(
+    c.dim('  Created by Daniel Amekpoagbe · https://www.amekpoagbe.com/')
+  )
+  console.log()
 }
 
 main()

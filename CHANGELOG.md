@@ -7,12 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.6] - 2026-06-12
+
 ### Added
 
 - Contributor infrastructure: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
   `CHANGELOG.md`, GitHub issue/PR templates, and CI.
 - Installer test suite (`node --test`) and `npm test` / `prepublishOnly` scripts.
 - README badges, a "How agent skills work" section, and a roadmap.
+- Installer `--dry-run` flag and a Node.js version guard.
+- Redesigned installer terminal UI: header box, aligned status rows, colored
+  status glyphs, and a skill-file summary (zero dependencies; color
+  auto-disables on non-TTY, `NO_COLOR`, or `TERM=dumb`).
 
 ## Roadmap (planned)
 
@@ -39,5 +45,6 @@ before starting — see [CONTRIBUTING.md](CONTRIBUTING.md).
 - Zero-dependency installer (`bin/install.js`) supporting Cursor, Claude Code,
   and Codex, with `--global` and `--force` options.
 
-[Unreleased]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.5...HEAD
+[Unreleased]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.6...HEAD
+[0.0.6]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/releases/tag/v0.0.5
