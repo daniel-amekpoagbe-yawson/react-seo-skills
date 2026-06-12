@@ -39,6 +39,7 @@ Options:
   --codex     Install for Codex only
   --global    Install to user-level skill directories (~/.cursor, ~/.claude, ~/.codex)
   --force     Overwrite existing installation
+  --dry-run   Show what would be installed without writing any files
   --help      Show this help message
 
 Examples:
@@ -55,6 +56,7 @@ function parseArgs(argv) {
     global: false,
     force: false,
     help: false,
+    dryRun: false,
   }
 
   for (const arg of argv) {
@@ -68,6 +70,10 @@ function parseArgs(argv) {
     }
     if (arg === '--force') {
       options.force = true
+      continue
+    }
+    if (arg === '--dry-run') {
+      options.dryRun = true
       continue
     }
     if (arg === '--all') {
@@ -112,14 +118,20 @@ function copyDir(src, dest) {
   }
 }
 
-function installTo(baseDir, force) {
+function installTo(baseDir, force, dryRun) {
   const targetDir = path.join(baseDir, SKILL_DIR_NAME)
 
   if (fs.existsSync(targetDir)) {
     if (!force) {
       return { status: 'skipped', path: targetDir }
     }
-    fs.rmSync(targetDir, { recursive: true, force: true })
+    if (!dryRun) {
+      fs.rmSync(targetDir, { recursive: true, force: true })
+    }
+  }
+
+  if (dryRun) {
+    return { status: 'would-install', path: targetDir }
   }
 
   copyDir(SOURCE_DIR, targetDir)
@@ -133,6 +145,16 @@ function formatPath(targetPath) {
     : targetPath
 }
 
+function checkNodeVersion() {
+  const major = Number(process.versions.node.split('.')[0])
+  if (Number.isFinite(major) && major < 18) {
+    console.error(
+      `react-seo-skills requires Node.js 18 or newer. You are running ${process.version}.`
+    )
+    process.exit(1)
+  }
+}
+
 function main() {
   const options = parseArgs(process.argv.slice(2))
 
@@ -140,6 +162,8 @@ function main() {
     printHelp()
     process.exit(0)
   }
+
+  checkNodeVersion()
 
   console.log('\n react-seo-skills\n')
 
@@ -153,14 +177,23 @@ function main() {
       ? target.global
       : path.join(cwd, target.project)
 
-    const result = installTo(baseDir, options.force)
+    const result = installTo(baseDir, options.force, options.dryRun)
     results.push({ agent, label: target.label, ...result })
   }
 
+  if (options.dryRun) {
+    console.log('(dry run — no files written)\n')
+  }
+
+  const ACTIONS = {
+    installed: { prefix: '✓', label: 'Installed' },
+    'would-install': { prefix: '→', label: 'Would install' },
+    skipped: { prefix: '·', label: 'Skipped (exists)' },
+  }
+
   for (const result of results) {
-    const prefix = result.status === 'installed' ? '✓' : '·'
-    const action = result.status === 'installed' ? 'Installed' : 'Skipped (exists)'
-    console.log(`${prefix} ${result.label}: ${action} at ${formatPath(result.path)}`)
+    const action = ACTIONS[result.status]
+    console.log(`${action.prefix} ${result.label}: ${action.label} at ${formatPath(result.path)}`)
     if (result.status === 'skipped') {
       console.log(`  Re-run with --force to overwrite.`)
     }

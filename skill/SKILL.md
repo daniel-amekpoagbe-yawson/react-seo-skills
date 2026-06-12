@@ -62,6 +62,12 @@ Always run in this sequence:
 
 If both `app/` and `pages/` exist, App Router takes precedence in Next.js 13+.
 
+> **Planned (not yet supported):** Astro (`0.1.0`) and TanStack Start (`0.2.0`).
+> These stacks are on the roadmap but have no reference file yet. If a project
+> uses one of them, apply the closest matching general principles, tell the
+> developer dedicated support is coming, and do not invent framework-specific
+> APIs.
+
 ---
 
 ## Implementation Order

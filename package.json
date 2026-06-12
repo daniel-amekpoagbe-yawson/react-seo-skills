@@ -40,6 +40,10 @@
   "bin": {
     "react-seo-skills": "./bin/install.js"
   },
+  "scripts": {
+    "test": "node --test",
+    "prepublishOnly": "node --test"
+  },
   "files": [
     "bin/",
     "skill/",

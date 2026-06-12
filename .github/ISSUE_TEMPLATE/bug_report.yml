@@ -1,0 +1,44 @@
+name: Bug report
+description: The installer or skill files behave unexpectedly.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for reporting a bug. Please fill in the details below.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: Running `npx react-seo-skills --cursor` did not create the skill folder.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run `npx react-seo-skills ...`
+        2. Look in `...`
+        3. See error
+    validations:
+      required: true
+  - type: input
+    id: command
+    attributes:
+      label: Command used
+      placeholder: npx react-seo-skills --global --force
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      placeholder: v20.11.0
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: macOS 14 / Ubuntu 24.04 / Windows 11
+    validations:
+      required: true

@@ -1,5 +1,10 @@
 # React SEO Skills
 
+[![npm version](https://img.shields.io/npm/v/react-seo-skills.svg)](https://www.npmjs.com/package/react-seo-skills)
+[![npm downloads](https://img.shields.io/npm/dm/react-seo-skills.svg)](https://www.npmjs.com/package/react-seo-skills)
+[![CI](https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/daniel-amekpoagbe-yawson/react-seo-skills/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 An agent skill that teaches **Cursor**, **Claude Code**, and **Codex** how to implement SEO and GEO (AI visibility) in **Next.js** and **React** apps.
 
 From keyword strategy to metadata, Schema.org JSON-LD, sitemaps, robots.txt, and `llms.txt` — with stack-aware patterns for App Router, Pages Router, and Vite SPAs.
@@ -7,6 +12,17 @@ From keyword strategy to metadata, Schema.org JSON-LD, sitemaps, robots.txt, and
 ```bash
 npx react-seo-skills
 ```
+
+---
+
+## How agent skills work
+
+This package does **not** add a runtime dependency to your app. It installs a set
+of Markdown files — an *agent skill* — into your AI coding agent's skill directory.
+When you ask the agent an SEO question, it discovers the skill from the
+`description` in `SKILL.md` and reads the relevant reference files on demand.
+
+Nothing is imported into your code. You're installing **knowledge**, not a library.
 
 ---
 
@@ -50,6 +66,12 @@ Overwrite an existing install:
 npx react-seo-skills --force
 ```
 
+Preview without writing any files:
+
+```bash
+npx react-seo-skills --dry-run
+```
+
 No extra config required. Agents discover the skill from the `description` in `SKILL.md`.
 
 ---
@@ -79,11 +101,13 @@ Restart **Claude Code** or **Codex** after installing if the skill does not appe
 
 ### Supported stacks
 
-| Stack | Reference |
-|---|---|
-| Next.js App Router | `skill/references/app-router.md` |
-| Next.js Pages Router | `skill/references/pages-router.md` |
-| Vite + React / CRA | `skill/references/react-vite.md` |
+| Stack | Reference | Status |
+|---|---|---|
+| Next.js App Router | `skill/references/app-router.md` | Available |
+| Next.js Pages Router | `skill/references/pages-router.md` | Available |
+| Vite + React / CRA | `skill/references/react-vite.md` | Available |
+| Astro | — | Planned (`0.1.0`) |
+| TanStack Start | — | Planned (`0.2.0`) |
 
 ---
 
@@ -123,6 +147,33 @@ skill/
 
 - Node.js 18+
 - A project using Next.js or React (Vite / CRA)
+
+---
+
+## Roadmap
+
+Upcoming stack support, tracked in [CHANGELOG.md](CHANGELOG.md):
+
+| Version | Stack |
+|---|---|
+| `0.1.0` | Astro (`<head>`, content collections, `@astrojs/sitemap`, robots, JSON-LD) |
+| `0.2.0` | TanStack Start (route `head()` metadata, server routes for sitemap/robots, JSON-LD) |
+
+Want to help build these? See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
+
+## Contributing
+
+Contributions are welcome — content corrections, new stack support, and installer
+improvements. Start with [CONTRIBUTING.md](CONTRIBUTING.md), and please read the
+[Code of Conduct](CODE_OF_CONDUCT.md).
+
+```bash
+git clone https://github.com/daniel-amekpoagbe-yawson/react-seo-skills.git
+cd react-seo-skills
+npm test
+```
 
 ---
 

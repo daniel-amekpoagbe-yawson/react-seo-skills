@@ -1,0 +1,35 @@
+name: New stack request
+description: Request SEO/GEO support for a framework not yet covered.
+labels: ["new-stack"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Want support for a framework that isn't covered yet? Note that **Astro**
+        and **TanStack Start** are already on the roadmap (see CHANGELOG.md).
+  - type: input
+    id: stack
+    attributes:
+      label: Framework / stack
+      placeholder: Remix, SvelteKit, Nuxt, Qwik City, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: detection
+    attributes:
+      label: How should the agent detect this stack?
+      description: What file(s) or dependencies uniquely identify a project on this stack?
+      placeholder: "`remix.config.js` exists, or `@remix-run/react` in dependencies."
+    validations:
+      required: true
+  - type: textarea
+    id: specifics
+    attributes:
+      label: Metadata / sitemap / robots specifics
+      description: How does this framework handle head metadata, sitemaps, and robots?
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contribution
+      options:
+        - label: I'm willing to open a PR for this (see CONTRIBUTING.md).

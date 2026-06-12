@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test / coverage output
+coverage/
+.nyc_output/
+*.tmp
+tmp/
+.tmp-install-test/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+
+# Build / package artifacts
+*.tgz
+dist/

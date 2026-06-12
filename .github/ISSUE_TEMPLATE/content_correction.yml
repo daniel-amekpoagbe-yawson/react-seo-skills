@@ -1,0 +1,25 @@
+name: Content correction
+description: Something in the skill is inaccurate, outdated, or unclear.
+labels: ["content"]
+body:
+  - type: input
+    id: file
+    attributes:
+      label: Which file?
+      placeholder: skill/references/react-helmet-async.md
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What is incorrect or outdated?
+      placeholder: The stated version / behavior is wrong because...
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: What is the correct information?
+      description: Include a source or link if possible (official docs, package page).
+    validations:
+      required: true
