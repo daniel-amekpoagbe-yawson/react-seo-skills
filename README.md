@@ -31,6 +31,7 @@ npx react-seo-skills
 - [Quick start](#quick-start)
 - [CLI reference](#cli-reference)
 - [Where it installs](#where-it-installs)
+- [Updating](#updating)
 - [What the agent learns](#what-the-agent-learns)
 - [Supported stacks](#supported-stacks)
 - [Example prompts](#example-prompts)
@@ -139,6 +140,30 @@ npx react-seo-skills --dry-run             # preview the changes first
 After installing, restart **Claude Code** or **Codex** if the skill does not
 appear — they rescan their skill directories on startup. Cursor picks it up
 automatically.
+
+---
+
+## Updating
+
+To pull the latest version into an existing install, re-run with `@latest` and
+`--force`:
+
+```bash
+npx react-seo-skills@latest --force
+```
+
+| Goal | Command |
+|---|---|
+| Update a project install | `npx react-seo-skills@latest --force` |
+| Update a global install | `npx react-seo-skills@latest --global --force` |
+
+- **`@latest`** bypasses the `npx` cache. A plain `npx react-seo-skills` may
+  re-run an older cached copy without checking the registry.
+- **`--force`** overwrites the existing skill files — without it the installer
+  detects the current install and skips with "already exists."
+
+After updating, restart **Claude Code** or **Codex** so they rescan the skill
+directory. Cursor picks up changes automatically.
 
 ---
 
