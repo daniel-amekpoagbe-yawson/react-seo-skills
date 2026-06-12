@@ -14,6 +14,24 @@ description: >
 SEO and GEO (AI visibility) for Next.js and React applications. Works in Cursor,
 Claude Code, and Codex via native skill discovery.
 
+<!-- BEGIN:react-seo-skills -->
+> **This may NOT be the Next.js, React, Vite, or react-helmet-async you know.**
+>
+> Frameworks ship breaking changes — APIs, conventions, and file structures in
+> the target codebase may differ from your training data. Before implementing
+> any SEO or GEO work:
+>
+> 1. **Read the codebase first.** Check the installed versions in `package.json`
+>    and the lockfile, the folder structure, and the project's existing
+>    conventions.
+> 2. **Verify against current documentation.** If the installed version is newer
+>    than what you are confident about, look up the official docs for that exact
+>    version. Never implement from memory when versions disagree.
+> 3. **Implement against what the project actually uses** — not what you
+>    remember. Example: `params` in `generateMetadata` is a plain object in
+>    Next.js 14 but a `Promise` in Next.js 15+.
+<!-- END:react-seo-skills -->
+
 ---
 
 ## Rules
@@ -23,22 +41,36 @@ Claude Code, and Codex via native skill discovery.
    [language.md](references/language.md).
 2. **Detect the stack before writing code.** Never apply Next.js APIs to a Vite
    project or Vite patterns to a Next.js project.
-3. **Start with keywords** for full SEO setups. See [keywords.md](references/keywords.md)
+3. **Verify framework versions before writing code.** Check `package.json` for
+   the installed versions of `next`, `react`, `vite`, and `react-helmet-async`.
+   If a version is newer than your training data, consult its official docs
+   before implementing — APIs and conventions change between major versions.
+4. **Ask for real project details — never guess or invent them.** Before writing
+   metadata, ask the developer for: site name, production domain, default OG
+   image URL, social handles, contact details, locale(s), and target keywords.
+   All `example.com` / `Site Name` values in the reference files are
+   placeholders. If you must proceed without an answer, mark every placeholder
+   with a `TODO` comment and list them for the developer at the end.
+5. **Never repeat SEO code.** Define metadata once in a shared, reusable place —
+   a `SEO` component (Pages Router, Vite), root-layout defaults plus
+   `title.template` (App Router), or schema builder helpers for JSON-LD. If the
+   same meta block appears on more than one page, extract it before continuing.
+6. **Start with keywords** for full SEO setups. See [keywords.md](references/keywords.md)
    before writing meta tags.
-4. **Validate every implementation.** Point the developer to
+7. **Validate every implementation.** Point the developer to
    [validation.md](references/validation.md). Never assume output is correct.
-5. **Install `react-helmet-async@latest` on Vite/plain React apps.** Run the
+8. **Install `react-helmet-async@latest` on Vite/plain React apps.** Run the
    install command before writing SEO code. Follow
    [react-helmet-async.md](references/react-helmet-async.md). Never use
    deprecated `react-helmet`.
-6. **Warn about CSR limitations.** Vite SPAs without prerendering have poor
+9. **Warn about CSR limitations.** Vite SPAs without prerendering have poor
    multi-route SEO. Surface this limitation, then still install Helmet and
    implement per-route metadata.
-7. **Use framework conventions.** Do not invent custom abstractions unless asked.
-8. **Do not over-tag.** Prioritize title, description, canonical, OG, and JSON-LD.
-9. **Flag performance issues** that affect ranking: unoptimized images, render-blocking
-   scripts, poor LCP. See the performance quick checks in
-   [validation.md](references/validation.md).
+10. **Use framework conventions.** Do not invent custom abstractions unless asked.
+11. **Do not over-tag.** Prioritize title, description, canonical, OG, and JSON-LD.
+12. **Flag performance issues** that affect ranking: unoptimized images, render-blocking
+    scripts, poor LCP. See the performance quick checks in
+    [validation.md](references/validation.md).
 
 ---
 

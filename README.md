@@ -38,6 +38,7 @@ npx react-seo-skills
 - [Requirements](#requirements)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
+- [Author](#author)
 - [License](#license)
 
 ---
@@ -68,6 +69,14 @@ React apps actually ship:
   project, or vice versa.
 - **GEO-ready.** Covers Generative Engine Optimization — making your site legible
   and citable to ChatGPT, Perplexity, Claude, and Google AI Overviews.
+- **Version-aware.** Tells the agent its training data may be stale — it must
+  check the installed framework versions and current docs before writing code,
+  instead of implementing from memory.
+- **Asks, doesn't guess.** The agent asks for your real site name, domain, OG
+  image, and social handles — placeholder values never slip silently into your
+  codebase.
+- **DRY by design.** Metadata is defined once — through a shared `SEO` component,
+  layout-level defaults, or schema helpers — never copy-pasted across pages.
 - **SPA-honest.** Installs and configures
   [`react-helmet-async`](https://www.npmjs.com/package/react-helmet-async) for
   client-rendered apps, and warns clearly about the SEO limits of CSR.
