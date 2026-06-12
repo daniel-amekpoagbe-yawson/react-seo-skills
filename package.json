@@ -1,6 +1,6 @@
 {
   "name": "react-seo-skills",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "Agent skill for Cursor, Claude Code, and Codex — SEO, GEO, and AI visibility for Next.js and Vite/React apps. Covers metadata, Open Graph, Schema.org JSON-LD, sitemap, robots.txt, keyword clustering, llms.txt, and CSR/prerender guidance.",
   "keywords": [
     "react-seo-skills",
