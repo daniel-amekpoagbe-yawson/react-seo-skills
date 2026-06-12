@@ -21,3 +21,6 @@ See `references/app-router.md` and `references/pages-router.md`.
 3. Structured data → `references/structured-data.md`
 4. Sitemap & robots → router reference
 5. GEO → `references/geo.md`
+
+
+Warn about CSR limitations on Vite SPAs without prerendering.
