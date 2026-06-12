@@ -1,5 +1,5 @@
 ---
-name: nextjs-react-seo
+name: react-seo-skills
 description: >
   Guides SEO, GEO, and AI visibility for Next.js and React apps in Cursor,
   Claude Code, and Codex. Use when setting up metadata, Open Graph, Twitter cards,

@@ -4,7 +4,7 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 
-const SKILL_DIR_NAME = 'nextjs-react-seo'
+const SKILL_DIR_NAME = 'react-seo-skills'
 const SOURCE_DIR = path.join(__dirname, '..', 'skill')
 
 const TARGETS = {
@@ -27,10 +27,10 @@ const TARGETS = {
 
 function printHelp() {
   console.log(`
-nextjs-react-seo-skill — install SEO and GEO skill for Cursor, Claude Code, and Codex
+react-seo-skills — install SEO and GEO skill for Cursor, Claude Code, and Codex
 
 Usage:
-  npx nextjs-react-seo-skill [options]
+  npx react-seo-skills [options]
 
 Options:
   --all       Install for all agents (default)
@@ -42,10 +42,10 @@ Options:
   --help      Show this help message
 
 Examples:
-  npx nextjs-react-seo-skill
-  npx nextjs-react-seo-skill --global
-  npx nextjs-react-seo-skill --cursor --claude
-  npx nextjs-react-seo-skill --codex --force
+  npx react-seo-skills
+  npx react-seo-skills --global
+  npx react-seo-skills --cursor --claude
+  npx react-seo-skills --codex --force
 `)
 }
 
@@ -141,7 +141,7 @@ function main() {
     process.exit(0)
   }
 
-  console.log('\n nextjs-react-seo-skill\n')
+  console.log('\n react-seo-skills\n')
 
   const scope = options.global ? 'global' : 'project'
   const cwd = process.cwd()
