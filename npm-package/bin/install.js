@@ -27,7 +27,7 @@ const TARGETS = {
 
 function printHelp() {
   console.log(`
-nextjs-react-seo-skill — install SEO/GEO skill for Cursor, Claude Code, and Codex
+nextjs-react-seo-skill — install SEO and GEO skill for Cursor, Claude Code, and Codex
 
 Usage:
   npx nextjs-react-seo-skill [options]
