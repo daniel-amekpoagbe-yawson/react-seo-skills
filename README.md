@@ -4,11 +4,12 @@
 [![license](https://img.shields.io/npm/l/react-seo-skills?color=blue)](LICENSE)
 
 An agent skill that teaches **Cursor**, **Claude Code**, and **Codex** how to
-implement SEO and GEO (AI visibility) in **Next.js** and **React** apps.
+implement SEO and improve AI-search visibility in **Next.js**, **Astro**, and
+**React** apps.
 
 It covers the full workflow — keyword strategy, metadata, Open Graph, Schema.org
 JSON-LD, sitemaps, `robots.txt`, and `llms.txt` — with patterns tailored to your
-stack: Next.js App Router, Pages Router, or Vite + React.
+stack: Next.js App Router, Pages Router, Astro, or Vite + React.
 
 > [!IMPORTANT]
 > **This is a CLI installer, not a runtime dependency.**
@@ -47,7 +48,7 @@ npx react-seo-skills
 ## How agent skills work
 
 This package does not add a runtime dependency to your app. It installs a set of
-Markdown files — an *agent skill* — into your AI coding agent's skill directory.
+Markdown files — an _agent skill_ — into your AI coding agent's skill directory.
 When you ask the agent an SEO question, it discovers the skill from the
 `description` in `SKILL.md` and reads the relevant reference files on demand.
 
@@ -60,16 +61,17 @@ download the files without copying them into place).
 
 ## Why this exists
 
-Most SEO advice is generic and stack-agnostic. This skill is built for how modern
-React apps actually ship:
+Most SEO advice is generic and stack-agnostic. This skill is built around the
+metadata and rendering conventions used by modern React, Next.js, and Astro apps:
 
 - **Language-aware.** Detects JavaScript vs TypeScript and writes code in the
   matching language — no stray types in a JS project, no missing types in a TS one.
-- **Stack-aware.** Detects Next.js App Router, Pages Router, or Vite + React and
-  applies the correct APIs for each. It never mixes Next.js patterns into a Vite
-  project, or vice versa.
-- **GEO-ready.** Covers Generative Engine Optimization — making your site legible
-  and citable to ChatGPT, Perplexity, Claude, and Google AI Overviews.
+- **Stack-aware.** Detects Next.js App Router, Pages Router, Astro, Vite + React,
+  and CRA, then applies the correct APIs for each. It never mixes framework
+  patterns between stacks.
+- **AI-search aware.** Applies foundational SEO to AI-search surfaces and treats
+  emerging conventions such as `llms.txt` as optional rather than guaranteed
+  ranking requirements.
 - **Version-aware.** Tells the agent its training data may be stale — it must
   check the installed framework versions and current docs before writing code,
   instead of implementing from memory.
@@ -78,9 +80,10 @@ React apps actually ship:
   codebase.
 - **DRY by design.** Metadata is defined once — through a shared `SEO` component,
   layout-level defaults, or schema helpers — never copy-pasted across pages.
-- **SPA-honest.** Installs and configures
-  [`react-helmet-async`](https://www.npmjs.com/package/react-helmet-async) for
-  client-rendered apps, and warns clearly about the SEO limits of CSR.
+- **Rendering-aware.** Chooses React 19 native metadata or
+  [`react-helmet-async`](https://www.npmjs.com/package/react-helmet-async) when
+  appropriate, and explains the SEO implications of client rendering,
+  prerendering, static output, and SSR.
 - **Audit-capable.** Includes a structured SEO audit workflow the agent can run
   against an existing project and report back as Critical / Suggestion / OK.
 
@@ -88,7 +91,7 @@ React apps actually ship:
 
 ## Quick start
 
-Run from your project root and follow the prompts:
+Run from your project root and choose options with flags when needed:
 
 ```bash
 npx react-seo-skills
@@ -106,17 +109,17 @@ discover the skill automatically from the `description` in `SKILL.md`.
 npx react-seo-skills [options]
 ```
 
-| Option | Description |
-|---|---|
-| *(none)* | Install for all agents into the current project |
-| `--all` | Install for all agents (explicit form of the default) |
-| `--cursor` | Install for Cursor only |
-| `--claude` | Install for Claude Code only |
-| `--codex` | Install for Codex only |
-| `--global` | Install to user-level directories (`~/.cursor`, `~/.claude`, `~/.codex`) |
-| `--force` | Overwrite an existing installation |
-| `--dry-run` | Show what would be installed without writing any files |
-| `--help` | Show usage information |
+| Option      | Description                                                              |
+| ----------- | ------------------------------------------------------------------------ |
+| _(none)_    | Install for all agents into the current project                          |
+| `--all`     | Install for all agents (explicit form of the default)                    |
+| `--cursor`  | Install for Cursor only                                                  |
+| `--claude`  | Install for Claude Code only                                             |
+| `--codex`   | Install for Codex only                                                   |
+| `--global`  | Install to user-level directories (`~/.cursor`, `~/.claude`, `~/.codex`) |
+| `--force`   | Overwrite an existing installation                                       |
+| `--dry-run` | Show what would be installed without writing any files                   |
+| `--help`    | Show usage information                                                   |
 
 You can combine flags. A few common examples:
 
@@ -131,11 +134,11 @@ npx react-seo-skills --dry-run             # preview the changes first
 
 ## Where it installs
 
-| Agent | Project path | Global path (`--global`) |
-|---|---|---|
-| Cursor | `.cursor/skills/react-seo-skills/` | `~/.cursor/skills/react-seo-skills/` |
+| Agent       | Project path                       | Global path (`--global`)             |
+| ----------- | ---------------------------------- | ------------------------------------ |
+| Cursor      | `.cursor/skills/react-seo-skills/` | `~/.cursor/skills/react-seo-skills/` |
 | Claude Code | `.claude/skills/react-seo-skills/` | `~/.claude/skills/react-seo-skills/` |
-| Codex | `.agents/skills/react-seo-skills/` | `~/.codex/skills/react-seo-skills/` |
+| Codex       | `.agents/skills/react-seo-skills/` | `~/.codex/skills/react-seo-skills/`  |
 
 After installing, restart **Claude Code** or **Codex** if the skill does not
 appear — they rescan their skill directories on startup. Cursor picks it up
@@ -152,10 +155,10 @@ To pull the latest version into an existing install, re-run with `@latest` and
 npx react-seo-skills@latest --force
 ```
 
-| Goal | Command |
-|---|---|
-| Update a project install | `npx react-seo-skills@latest --force` |
-| Update a global install | `npx react-seo-skills@latest --global --force` |
+| Goal                     | Command                                        |
+| ------------------------ | ---------------------------------------------- |
+| Update a project install | `npx react-seo-skills@latest --force`          |
+| Update a global install  | `npx react-seo-skills@latest --global --force` |
 
 - **`@latest`** bypasses the `npx` cache. A plain `npx react-seo-skills` may
   re-run an older cached copy without checking the registry.
@@ -169,26 +172,27 @@ directory. Cursor picks up changes automatically.
 
 ## What the agent learns
 
-| Area | What it covers |
-|---|---|
-| **Keywords** | Ideation, search-intent clustering, validation, and cannibalization checks |
-| **Metadata** | Title, description, canonical, Open Graph, Twitter cards, and hreflang |
-| **Structured data** | Schema.org JSON-LD — Organization, Article, FAQ, LocalBusiness, and more |
-| **Sitemap & robots** | `sitemap.ts` / `sitemap.xml`, `robots.ts` / `robots.txt`, and AI crawler rules |
-| **GEO** | `llms.txt`, `/ai` knowledge pages, entity schema, and AI-citation structure |
-| **Vite / SPA** | `react-helmet-async` setup, CSR warnings, and prerendering guidance |
+| Area                     | What it covers                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------- |
+| **Keywords**             | Ideation, search-intent clustering, validation, and cannibalization checks            |
+| **Metadata**             | Title, description, canonical, Open Graph, Twitter cards, and hreflang                |
+| **Structured data**      | Schema.org JSON-LD — Organization, Article, LocalBusiness, and more                   |
+| **Sitemap & robots**     | `sitemap.ts` / `sitemap.xml`, `robots.ts` / `robots.txt`, and deliberate crawl policy |
+| **AI-search visibility** | Helpful content structure, entity clarity, optional `llms.txt`, and measurement       |
+| **Astro**                | `.astro` layouts, content collections, `@astrojs/sitemap`, robots, and JSON-LD        |
+| **Vite / SPA**           | React metadata choices, CSR warnings, and prerendering guidance                       |
 
 ---
 
 ## Supported stacks
 
-| Stack | Reference | Status |
-|---|---|---|
-| Next.js App Router | `skill/references/app-router.md` | Available |
-| Next.js Pages Router | `skill/references/pages-router.md` | Available |
-| Vite + React / CRA | `skill/references/react-vite.md` | Available |
-| Astro | — | Planned (`0.1.0`) |
-| TanStack Start | — | Planned (`0.2.0`) |
+| Stack                | Reference                          | Status            |
+| -------------------- | ---------------------------------- | ----------------- |
+| Next.js App Router   | `skill/references/app-router.md`   | Available         |
+| Next.js Pages Router | `skill/references/pages-router.md` | Available         |
+| Vite + React / CRA   | `skill/references/react-vite.md`   | Available         |
+| Astro                | `skill/references/astro.md`        | Available         |
+| TanStack Start       | —                                  | Planned (`0.4.0`) |
 
 See the [roadmap](#roadmap) for details on planned stacks.
 
@@ -201,9 +205,10 @@ Once the skill is installed, ask your agent things like:
 - "Set up SEO metadata for my Next.js app."
 - "Audit the SEO on this project and report what's missing."
 - "Add Schema.org JSON-LD to my blog posts."
-- "Write an `llms.txt` so AI search engines understand my site."
+- "Should this site have an `llms.txt`, and what should it contain?"
 - "My Vite SPA isn't ranking — what should I do?"
-- "Set up a sitemap and `robots.txt` that allow AI crawlers."
+- "Set up a sitemap and `robots.txt` that match this site's crawl policy."
+- "Add SEO metadata, JSON-LD, and a sitemap to my Astro blog."
 
 ---
 
@@ -215,6 +220,7 @@ skill/
 └── references/
     ├── language.md                JavaScript vs TypeScript detection
     ├── keywords.md                Keyword clustering and validation
+    ├── astro.md                   Astro metadata, sitemap, and robots
     ├── app-router.md              Next.js App Router patterns
     ├── pages-router.md            Next.js Pages Router patterns
     ├── react-vite.md              Vite / SPA workflow
@@ -231,8 +237,8 @@ agent loads only when they are relevant to the task.
 
 ## Requirements
 
-- **Node.js 18 or newer**
-- A project using **Next.js** or **React** (Vite or CRA)
+- **Node.js 18 or newer** to run the installer
+- A project using **Next.js**, **Astro 5+**, or **React** (Vite or CRA)
 
 ---
 
@@ -240,10 +246,9 @@ agent loads only when they are relevant to the task.
 
 Upcoming stack support is tracked in [CHANGELOG.md](CHANGELOG.md):
 
-| Version | Stack | Scope |
-|---|---|---|
-| `0.1.0` | Astro | `<head>` metadata, content collections, `@astrojs/sitemap`, `robots.txt`, JSON-LD |
-| `0.2.0` | TanStack Start | Route-level `head()` metadata, server routes for sitemap/robots, JSON-LD |
+| Version | Stack          | Scope                                                                    |
+| ------- | -------------- | ------------------------------------------------------------------------ |
+| `0.4.0` | TanStack Start | Route-level `head()` metadata, server routes for sitemap/robots, JSON-LD |
 
 Want to help build these? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -267,7 +272,7 @@ npm test
 
 **[Daniel Amekpoagbe](https://www.amekpoagbe.com/)** — Full-Stack Developer, Accra, Ghana.
 
-Building fast, SEO-ready React and Next.js apps. Portfolio at
+Building fast, SEO-ready React, Next.js, and Astro apps. Portfolio at
 [amekpoagbe.com](https://www.amekpoagbe.com/).
 
 ---

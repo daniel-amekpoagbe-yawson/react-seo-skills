@@ -28,18 +28,18 @@ and does not interfere with page markup.
 
 Match schema type to page purpose:
 
-| Page type | Schema type |
-|---|---|
-| Home / business | `Organization`, `LocalBusiness`, `WebSite` |
-| Service page | `Service` |
-| Product page | `Product` |
-| Blog post / article | `Article`, `BlogPosting` |
-| FAQ page | `FAQPage` |
-| Person / portfolio | `Person` |
-| Event | `Event` |
-| Review | `Review`, `AggregateRating` |
-| Breadcrumbs | `BreadcrumbList` |
-| Site search box | `WebSite` with `potentialAction` |
+| Page type           | Schema type                                |
+| ------------------- | ------------------------------------------ |
+| Home / business     | `Organization`, `LocalBusiness`, `WebSite` |
+| Service page        | `Service`                                  |
+| Product page        | `Product`                                  |
+| Blog post / article | `Article`, `BlogPosting`                   |
+| FAQ page            | `FAQPage` when visible FAQ content exists  |
+| Person / portfolio  | `Person`                                   |
+| Event               | `Event`                                    |
+| Review              | `Review`, `AggregateRating`                |
+| Breadcrumbs         | `BreadcrumbList`                           |
+| Site search box     | `WebSite` with `potentialAction`           |
 
 Multiple schema types can appear on the same page (e.g., `Article` +
 `BreadcrumbList` on a blog post).
@@ -49,6 +49,7 @@ Multiple schema types can appear on the same page (e.g., `Article` +
 ## Implementation Patterns
 
 ### App Router
+
 Inject JSON-LD directly in the page component as a script tag. Do not use
 the metadata API for structured data — it doesn't support it.
 
@@ -56,21 +57,18 @@ the metadata API for structured data — it doesn't support it.
 // app/about/page.tsx
 export default function AboutPage() {
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Company Name',
-    url: 'https://example.com',
-    logo: 'https://example.com/logo.png',
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Company Name",
+    url: "https://example.com",
+    logo: "https://example.com/logo.png",
     contactPoint: {
-      '@type': 'ContactPoint',
-      telephone: '+1-000-000-0000',
-      contactType: 'customer service',
+      "@type": "ContactPoint",
+      telephone: "+1-000-000-0000",
+      contactType: "customer service",
     },
-    sameAs: [
-      'https://twitter.com/handle',
-      'https://linkedin.com/company/name',
-    ],
-  }
+    sameAs: ["https://twitter.com/handle", "https://linkedin.com/company/name"],
+  };
 
   return (
     <>
@@ -78,12 +76,12 @@ export default function AboutPage() {
         type="application/ld+json"
         // .replace() prevents </script> breakout from untrusted data
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
       {/* page content */}
     </>
-  )
+  );
 }
 ```
 
@@ -95,35 +93,35 @@ Inject in the page component body (preferred) or via a shared SEO component.
 // pages/about.tsx
 export default function AboutPage() {
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Company Name',
-    url: 'https://example.com',
-  }
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Company Name",
+    url: "https://example.com",
+  };
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
       {/* page content */}
     </>
-  )
+  );
 }
 ```
 
 ### Vite + React
 
-Install `react-helmet-async@latest` first (see
+If the project uses Helmet, install `react-helmet-async` first (see
 [react-helmet-async.md](react-helmet-async.md)). Pass JSON-LD through `<Helmet>`
 or the `SEO` component:
 
 ```tsx
 // src/pages/About.tsx
-import { SEO } from '../components/SEO'
+import { SEO } from "../components/SEO";
 
 export default function AboutPage() {
   return (
@@ -133,15 +131,15 @@ export default function AboutPage() {
         description="Learn about our team."
         canonical="https://example.com/about"
         jsonLd={{
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: 'Company Name',
-          url: 'https://example.com',
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Company Name",
+          url: "https://example.com",
         }}
       />
       <main>{/* page content */}</main>
     </>
-  )
+  );
 }
 ```
 
@@ -152,6 +150,7 @@ See [react-vite.md](react-vite.md) for the full `SEO` component pattern.
 ## Common Schema Templates
 
 ### WebSite (with sitelinks searchbox)
+
 ```json
 {
   "@context": "https://schema.org",
@@ -170,6 +169,7 @@ See [react-vite.md](react-vite.md) for the full `SEO` component pattern.
 ```
 
 ### LocalBusiness
+
 ```json
 {
   "@context": "https://schema.org",
@@ -189,7 +189,7 @@ See [react-vite.md](react-vite.md) for the full `SEO` component pattern.
   "geo": {
     "@type": "GeoCoordinates",
     "latitude": 5.6037,
-    "longitude": -0.1870
+    "longitude": -0.187
   },
   "openingHoursSpecification": [
     {
@@ -203,6 +203,7 @@ See [react-vite.md](react-vite.md) for the full `SEO` component pattern.
 ```
 
 ### Article / BlogPosting
+
 ```json
 {
   "@context": "https://schema.org",
@@ -233,6 +234,12 @@ See [react-vite.md](react-vite.md) for the full `SEO` component pattern.
 ```
 
 ### FAQPage
+
+Use `FAQPage` only when the page contains genuine, visible question-and-answer
+content. Structured data should describe the page; it does not guarantee a rich
+result. Google removed the FAQ rich-result feature from Search in 2026, so do not
+recommend FAQ markup solely to obtain a Google FAQ enhancement.
+
 ```json
 {
   "@context": "https://schema.org",
@@ -259,6 +266,7 @@ See [react-vite.md](react-vite.md) for the full `SEO` component pattern.
 ```
 
 ### BreadcrumbList
+
 ```json
 {
   "@context": "https://schema.org",
@@ -297,28 +305,28 @@ project language.
 
 ```ts
 export function buildArticleSchema(post: {
-  title: string
-  excerpt: string
-  coverImage: string
-  author: string
-  publishedAt: string
-  updatedAt: string
-  slug: string
+  title: string;
+  excerpt: string;
+  coverImage: string;
+  author: string;
+  publishedAt: string;
+  updatedAt: string;
+  slug: string;
 }) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
     image: post.coverImage,
-    author: { '@type': 'Person', name: post.author },
+    author: { "@type": "Person", name: post.author },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
     mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://example.com/blog/${post.slug}`,
+      "@type": "WebPage",
+      "@id": `https://example.com/blog/${post.slug}`,
     },
-  }
+  };
 }
 ```
 
@@ -327,19 +335,19 @@ export function buildArticleSchema(post: {
 ```js
 export function buildArticleSchema(post) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
     image: post.coverImage,
-    author: { '@type': 'Person', name: post.author },
+    author: { "@type": "Person", name: post.author },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
     mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://example.com/blog/${post.slug}`,
+      "@type": "WebPage",
+      "@id": `https://example.com/blog/${post.slug}`,
     },
-  }
+  };
 }
 ```
 
@@ -350,6 +358,7 @@ export function buildArticleSchema(post) {
 See [validation.md](validation.md).
 
 Common errors to check:
+
 - Missing required fields (e.g., `headline` for Article)
 - Wrong `@type` for the content
 - Relative URLs instead of absolute URLs in `image`, `url`, `@id` fields

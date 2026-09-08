@@ -11,7 +11,8 @@ Applies to Next.js with the `pages/` directory (all versions).
 
 1. **Match project language** — see [language.md](language.md). Use `.tsx`/`.jsx`
    and `.ts`/`.js` matching the project.
-2. Use `next/head` or a shared `SEO` component — never `next/metadata` in Pages Router.
+2. Use `next/head` or a shared `SEO` component — never the App Router metadata
+   exports in Pages Router.
 3. Inject JSON-LD in the page component body, not only in `<Head>`.
 4. Use `public/robots.txt` or an API route for robots rules.
 5. Prefer a reusable `SEO` component over repeating Head tags on every page.
@@ -24,22 +25,29 @@ The primary way to set metadata in Pages Router is the `<Head>` component
 from `next/head`. It can be used in any page component.
 
 ### Page-level metadata pattern
+
 ```tsx
 // pages/about.tsx
-import Head from 'next/head'
+import Head from "next/head";
 
 export default function AboutPage() {
   return (
     <>
       <Head>
         <title>About Us — Site Name</title>
-        <meta name="description" content="A clear description under 160 characters." />
+        <meta
+          name="description"
+          content="A clear description under 160 characters."
+        />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://example.com/about" />
 
         {/* Open Graph */}
         <meta property="og:title" content="About Us — Site Name" />
-        <meta property="og:description" content="Same or slightly different from meta description." />
+        <meta
+          property="og:description"
+          content="Same or slightly different from meta description."
+        />
         <meta property="og:url" content="https://example.com/about" />
         <meta property="og:site_name" content="Site Name" />
         <meta property="og:image" content="https://example.com/og/about.png" />
@@ -50,40 +58,44 @@ export default function AboutPage() {
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="About Us — Site Name" />
-        <meta name="twitter:description" content="Twitter-specific description." />
+        <meta
+          name="twitter:description"
+          content="Twitter-specific description."
+        />
         <meta name="twitter:image" content="https://example.com/og/about.png" />
       </Head>
       {/* page content */}
     </>
-  )
+  );
 }
 ```
 
 ### Reusable SEO component (recommended pattern)
+
 Rather than repeating Head tags on every page, create a shared component:
 
 ```tsx
 // components/SEO.tsx
-import Head from 'next/head'
+import Head from "next/head";
 
 type SEOProps = {
-  title: string
-  description: string
-  canonical: string
-  ogImage?: string
-  ogType?: 'website' | 'article'
-  noIndex?: boolean
-}
+  title: string;
+  description: string;
+  canonical: string;
+  ogImage?: string;
+  ogType?: "website" | "article";
+  noIndex?: boolean;
+};
 
 export function SEO({
   title,
   description,
   canonical,
-  ogImage = 'https://example.com/og/default.png',
-  ogType = 'website',
+  ogImage = "https://example.com/og/default.png",
+  ogType = "website",
   noIndex = false,
 }: SEOProps) {
-  const fullTitle = `${title} — Site Name`
+  const fullTitle = `${title} — Site Name`;
 
   return (
     <Head>
@@ -103,14 +115,15 @@ export function SEO({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
     </Head>
-  )
+  );
 }
 ```
 
 Usage:
+
 ```tsx
 // pages/services.tsx
-import { SEO } from '@/components/SEO'
+import { SEO } from "@/components/SEO";
 
 export default function ServicesPage() {
   return (
@@ -122,17 +135,23 @@ export default function ServicesPage() {
       />
       {/* page content */}
     </>
-  )
+  );
 }
 ```
 
 ### Dynamic metadata for data-driven pages
+
 ```tsx
 // pages/blog/[slug].tsx
-import Head from 'next/head'
-import { GetStaticProps, GetStaticPaths } from 'next'
+import Head from "next/head";
+import { GetStaticProps, GetStaticPaths } from "next";
 
-type Post = { title: string; excerpt: string; slug: string; coverImage: string }
+type Post = {
+  title: string;
+  excerpt: string;
+  slug: string;
+  coverImage: string;
+};
 
 export default function BlogPost({ post }: { post: Post }) {
   return (
@@ -148,7 +167,7 @@ export default function BlogPost({ post }: { post: Post }) {
       </Head>
       {/* post content */}
     </>
-  )
+  );
 }
 ```
 
@@ -170,16 +189,20 @@ Pages Router doesn't have a built-in sitemap API. The standard approach is a
 custom API route or a build-time generated file.
 
 ### API route approach
+
 ```ts
 // pages/api/sitemap.ts
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const posts = await fetchAllPosts()
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const posts = await fetchAllPosts();
 
-  const staticPages = ['', '/about', '/services', '/contact']
-  const dynamicPages = posts.map((p) => `/blog/${p.slug}`)
-  const allPages = [...staticPages, ...dynamicPages]
+  const staticPages = ["", "/about", "/services", "/contact"];
+  const dynamicPages = posts.map((p) => `/blog/${p.slug}`);
+  const allPages = [...staticPages, ...dynamicPages];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -190,19 +213,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     <loc>https://example.com${page}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>${page === '' ? '1.0' : '0.8'}</priority>
-  </url>`
+    <priority>${page === "" ? "1.0" : "0.8"}</priority>
+  </url>`,
     )
-    .join('')}
-</urlset>`
+    .join("")}
+</urlset>`;
 
-  res.setHeader('Content-Type', 'application/xml')
-  res.write(sitemap)
-  res.end()
+  res.setHeader("Content-Type", "application/xml");
+  res.write(sitemap);
+  res.end();
 }
 ```
 
 Add to `next.config.js` to serve at `/sitemap.xml`:
+
 ```js
 async rewrites() {
   return [{ source: '/sitemap.xml', destination: '/api/sitemap' }]
@@ -210,17 +234,20 @@ async rewrites() {
 ```
 
 Alternatively, use the `next-sitemap` package for a zero-config solution:
+
 ```bash
 npm install next-sitemap
 ```
+
 ```js
 // next-sitemap.config.js
 module.exports = {
-  siteUrl: 'https://example.com',
+  siteUrl: "https://example.com",
   generateRobotsTxt: true,
-  exclude: ['/admin/*', '/api/*'],
-}
+  exclude: ["/admin/*", "/api/*"],
+};
 ```
+
 Add `"postbuild": "next-sitemap"` to package.json scripts.
 
 ---
@@ -228,7 +255,9 @@ Add `"postbuild": "next-sitemap"` to package.json scripts.
 ## robots.txt
 
 ### Static file (simplest)
+
 Create `public/robots.txt`:
+
 ```
 User-agent: *
 Allow: /
@@ -245,11 +274,12 @@ Sitemap: https://example.com/sitemap.xml
 ```
 
 ### Dynamic (via API route)
+
 ```ts
 // pages/api/robots.ts
 export default function handler(req, res) {
-  res.setHeader('Content-Type', 'text/plain')
-  res.send(`User-agent: *\nAllow: /\nSitemap: https://example.com/sitemap.xml`)
+  res.setHeader("Content-Type", "text/plain");
+  res.send(`User-agent: *\nAllow: /\nSitemap: https://example.com/sitemap.xml`);
 }
 ```
 

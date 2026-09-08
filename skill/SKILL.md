@@ -1,20 +1,21 @@
 ---
 name: react-seo-skills
 description: >
-  Guides SEO, GEO, and AI visibility for Next.js and React apps in Cursor,
+   Guides SEO and AI-search visibility for Next.js, Astro, and React apps in Cursor,
   Claude Code, and Codex. Use when setting up metadata, Open Graph, Twitter cards,
-  Schema.org JSON-LD, sitemap, robots.txt, llms.txt, keyword research, keyword
+   Schema.org JSON-LD, sitemaps, robots.txt, optional llms.txt, keyword research,
   clustering, auditing SEO, improving discoverability, or setting up structured
-  data. Covers Next.js App Router, Pages Router, and Vite + React SPAs. Matches
+   data. Covers Next.js App Router, Pages Router, Astro, and Vite + React SPAs. Matches
   JavaScript or TypeScript to the project language.
 ---
 
 # React SEO Skills
 
-SEO and GEO (AI visibility) for Next.js and React applications. Works in Cursor,
+SEO and AI-search visibility for Next.js, Astro, and React applications. Works in Cursor,
 Claude Code, and Codex via native skill discovery.
 
 <!-- BEGIN:react-seo-skills -->
+
 > **This may NOT be the Next.js, React, Vite, or react-helmet-async you know.**
 >
 > Frameworks ship breaking changes — APIs, conventions, and file structures in
@@ -30,6 +31,7 @@ Claude Code, and Codex via native skill discovery.
 > 3. **Implement against what the project actually uses** — not what you
 >    remember. Example: `params` in `generateMetadata` is a plain object in
 >    Next.js 14 but a `Promise` in Next.js 15+.
+
 <!-- END:react-seo-skills -->
 
 ---
@@ -39,8 +41,9 @@ Claude Code, and Codex via native skill discovery.
 1. **Detect language before anything else.** JavaScript project → write `.js`/`.jsx`
    with no types. TypeScript project → write `.ts`/`.tsx` with types. See
    [language.md](references/language.md).
-2. **Detect the stack before writing code.** Never apply Next.js APIs to a Vite
-   project or Vite patterns to a Next.js project.
+2. **Detect the stack before writing code.** Never apply Next.js APIs to an Astro
+   or Vite project, Astro patterns to Next.js or Vite, or Vite patterns to a
+   Next.js or Astro project.
 3. **Verify framework versions before writing code.** Check `package.json` for
    the installed versions of `next`, `react`, `vite`, and `react-helmet-async`.
    If a version is newer than your training data, consult its official docs
@@ -59,13 +62,15 @@ Claude Code, and Codex via native skill discovery.
    before writing meta tags.
 7. **Validate every implementation.** Point the developer to
    [validation.md](references/validation.md). Never assume output is correct.
-8. **Install `react-helmet-async@latest` on Vite/plain React apps.** Run the
-   install command before writing SEO code. Follow
-   [react-helmet-async.md](references/react-helmet-async.md). Never use
-   deprecated `react-helmet`.
-9. **Warn about CSR limitations.** Vite SPAs without prerendering have poor
-   multi-route SEO. Surface this limitation, then still install Helmet and
-   implement per-route metadata.
+8. **Choose the React metadata approach deliberately.** React 19 can hoist
+   `<title>`, `<meta>`, and `<link>` from rendered JSX. Use
+   `react-helmet-async` when the project needs its additional API, React 16–18
+   support, or SSR context handling; never add it automatically to every app.
+   Never use the deprecated `react-helmet` package.
+9. **Warn about CSR limitations accurately.** A client-only SPA can update
+   metadata after JavaScript runs, but some crawlers and social fetchers may
+   inspect the initial HTML only. Recommend prerendering or SSR when indexable
+   route content and metadata must be present in the initial response.
 10. **Use framework conventions.** Do not invent custom abstractions unless asked.
 11. **Do not over-tag.** Prioritize title, description, canonical, OG, and JSON-LD.
 12. **Flag performance issues** that affect ranking: unoptimized images, render-blocking
@@ -78,42 +83,41 @@ Claude Code, and Codex via native skill discovery.
 
 Always run in this sequence:
 
-| Step | Check | Reference |
-|---|---|---|
-| 1 | **Language** — JS or TS? | [language.md](references/language.md) |
-| 2 | **Stack** — Next.js App/Pages or Vite/React? | Table below |
-| 3 | **Implementation** | Stack reference file |
+| Step | Check                                                | Reference                             |
+| ---- | ---------------------------------------------------- | ------------------------------------- |
+| 1    | **Language** — JS or TS?                             | [language.md](references/language.md) |
+| 2    | **Stack** — Next.js App/Pages, Astro, or Vite/React? | Table below                           |
+| 3    | **Implementation**                                   | Stack reference file                  |
 
 ### Stack Detection
 
-| Signal | Stack | Reference |
-|---|---|---|
-| `app/layout.tsx` or `app/layout.jsx` | Next.js App Router | [app-router.md](references/app-router.md) |
-| `pages/_app.tsx` or `pages/_app.jsx` | Next.js Pages Router | [pages-router.md](references/pages-router.md) |
-| `vite.config.ts` or `vite.config.js` | Vite + React | [react-vite.md](references/react-vite.md) |
-| `react-scripts` in `package.json` dependencies | CRA (treat as Vite SPA) | [react-vite.md](references/react-vite.md) |
+| Signal                                                              | Stack                   | Reference                                     |
+| ------------------------------------------------------------------- | ----------------------- | --------------------------------------------- |
+| `app/layout.tsx` or `app/layout.jsx`                                | Next.js App Router      | [app-router.md](references/app-router.md)     |
+| `pages/_app.tsx` or `pages/_app.jsx`                                | Next.js Pages Router    | [pages-router.md](references/pages-router.md) |
+| `astro.config.*`, `src/pages/*.astro`, or `astro` in `package.json` | Astro                   | [astro.md](references/astro.md)               |
+| `vite.config.ts` or `vite.config.js`                                | Vite + React            | [react-vite.md](references/react-vite.md)     |
+| `react-scripts` in `package.json` dependencies                      | CRA (treat as Vite SPA) | [react-vite.md](references/react-vite.md)     |
 
 If both `app/` and `pages/` exist, App Router takes precedence in Next.js 13+.
 
-> **Planned (not yet supported):** Astro (`0.1.0`) and TanStack Start (`0.2.0`).
-> These stacks are on the roadmap but have no reference file yet. If a project
-> uses one of them, apply the closest matching general principles, tell the
-> developer dedicated support is coming, and do not invent framework-specific
-> APIs.
+> **Planned (not yet supported):** TanStack Start (`0.4.0`). If a project uses
+> it, apply the closest matching general principles, tell the developer dedicated
+> support is coming, and do not invent framework-specific APIs.
 
 ---
 
 ## Implementation Order
 
-| Step | Topic | Reference |
-|---|---|---|
-| 0 | Language (JS / TS) | [language.md](references/language.md) |
-| 1 | Keyword clustering & validation | [keywords.md](references/keywords.md) |
-| 2 | Metadata & Open Graph | Stack reference file |
-| 3 | Structured data (JSON-LD) | [structured-data.md](references/structured-data.md) |
-| 4 | Sitemap & robots | Stack reference file |
-| 5 | GEO / AI visibility | [geo.md](references/geo.md) |
-| 6 | Validation | [validation.md](references/validation.md) |
+| Step | Topic                           | Reference                                           |
+| ---- | ------------------------------- | --------------------------------------------------- |
+| 0    | Language (JS / TS)              | [language.md](references/language.md)               |
+| 1    | Keyword clustering & validation | [keywords.md](references/keywords.md)               |
+| 2    | Metadata & Open Graph           | Stack reference file                                |
+| 3    | Structured data (JSON-LD)       | [structured-data.md](references/structured-data.md) |
+| 4    | Sitemap & robots                | Stack reference file                                |
+| 5    | GEO / AI visibility             | [geo.md](references/geo.md)                         |
+| 6    | Validation                      | [validation.md](references/validation.md)           |
 
 Adapt all code to the detected language before implementing.
 
@@ -126,24 +130,24 @@ Adapt all code to the detected language before implementing.
 3. **Keywords** — keyword map? Distinct intents per page?
 4. **Metadata** — title, description, canonical, OG, Twitter on key routes.
 5. **Structured data** — JSON-LD present? Correct `@type`? Absolute URLs?
-6. **Sitemap & robots** — exists? AI crawlers allowed if GEO is a goal?
+6. **Sitemap & robots** — exists and reflects the site's crawl policy?
 7. **GEO** — checklist in [geo.md](references/geo.md).
-8. **Vite/React** — `react-helmet-async@latest`, `HelmetProvider`, `<SEO />` on routes.
-9. **CSR check (Vite)** — meta tags in page source? Flag critical if missing on CSR.
+8. **Stack-specific rendering** — metadata and per-route coverage match the detected stack.
+9. **CSR/SSR check** — are important content and metadata present in the initial HTML?
 10. **Report** as Critical / Suggestion / OK.
 
 ---
 
 ## Stack Quick Reference
 
-| Feature | App Router | Pages Router | Vite + React |
-|---|---|---|---|
-| Metadata API | `next/metadata` | `next/head` | `react-helmet-async@latest` |
-| Sitemap | `app/sitemap.ts` or `.js` | API route or `next-sitemap` | `public/sitemap.xml` or build script |
-| Robots | `app/robots.ts` or `.js` | `public/robots.txt` | `public/robots.txt` |
-| JSON-LD | Page `<script>` | Page `<script>` | `SEO` component via Helmet |
-| File ext (TS) | `.tsx`, `.ts` | `.tsx`, `.ts` | `.tsx`, `.ts` |
-| File ext (JS) | `.jsx`, `.js` | `.jsx`, `.js` | `.jsx`, `.js` |
+| Feature       | App Router                      | Pages Router                | Astro                           | Vite + React                         |
+| ------------- | ------------------------------- | --------------------------- | ------------------------------- | ------------------------------------ |
+| Metadata API  | `metadata` / `generateMetadata` | `next/head`                 | HTML in `.astro` layouts/pages  | React 19 JSX or `react-helmet-async` |
+| Sitemap       | `app/sitemap.ts` or `.js`       | API route or `next-sitemap` | `@astrojs/sitemap`              | `public/sitemap.xml` or build script |
+| Robots        | `app/robots.ts` or `.js`        | `public/robots.txt`         | `public/robots.txt` or endpoint | `public/robots.txt`                  |
+| JSON-LD       | Page `<script>`                 | Page `<script>`             | Page/layout `<script>`          | Page `<script>` or `SEO` component   |
+| File ext (TS) | `.tsx`, `.ts`                   | `.tsx`, `.ts`               | `.astro`, `.ts`                 | `.tsx`, `.ts`                        |
+| File ext (JS) | `.jsx`, `.js`                   | `.jsx`, `.js`               | `.astro`, `.js`                 | `.jsx`, `.js`                        |
 
 ---
 
@@ -151,4 +155,5 @@ Adapt all code to the detected language before implementing.
 
 - Present options and trade-offs. Recommend one path only when asked.
 - Performance is SEO — Core Web Vitals affect ranking.
-- GEO complements SEO — implement both for maximum discoverability.
+- AI-search visibility builds on foundational SEO; use the GEO guidance when the
+  project's audience or distribution channels make it relevant.

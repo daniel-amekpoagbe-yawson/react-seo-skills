@@ -13,17 +13,22 @@ for install commands, API reference, SSR patterns, and the `SEO` component.
 
 1. **Match project language** — see [language.md](language.md). Use `main.jsx` /
    `SEO.jsx` in JS projects, `main.tsx` / `SEO.tsx` in TS projects.
-2. **Never** suggest `next/metadata`, `generateMetadata`, `sitemap.ts`, or
-   `robots.ts` — those are Next.js-only APIs.
-3. **Always install `react-helmet-async@latest`** and follow
-   [react-helmet-async.md](react-helmet-async.md) before writing SEO code.
+2. **Never** suggest Next.js metadata exports, `generateMetadata`, `sitemap.ts`,
+   or `robots.ts` — those are Next.js-only APIs.
+3. **Choose a metadata implementation that matches the React version.** React 19
+   can hoist `<title>`, `<meta>`, `<link>`, and `<script>` from JSX. Use
+   `react-helmet-async` for React 16–18, for its `Helmet` API, or when its SSR
+   context features are useful. Follow [react-helmet-async.md](react-helmet-async.md)
+   when using it.
 4. **Never** use `react-helmet` — uninstall it if present.
-5. **Always** wrap the app in `HelmetProvider` at the root.
-6. **Always** use the shared `SEO` component on every indexable route.
-7. **Always** place static crawl files in `public/`: `robots.txt`, `sitemap.xml`,
-   `llms.txt`.
-8. **Warn about CSR** on client-only apps, then still install Helmet — required
-   for social previews and JS-executing crawlers.
+5. **If using `react-helmet-async`,** wrap the app in `HelmetProvider` at the
+   root and use a shared SEO component on indexable routes.
+6. **Place static crawl files in `public/`:** `robots.txt` and `sitemap.xml`.
+   Add `llms.txt` only when the site has a deliberate audience or integration
+   for that emerging convention.
+7. **Warn about CSR** on client-only apps. Metadata can be updated after
+   JavaScript executes, but initial HTML may be empty for non-JavaScript
+   consumers; recommend prerendering or SSR when route indexing matters.
 
 ---
 
@@ -31,47 +36,46 @@ for install commands, API reference, SSR patterns, and the `SEO` component.
 
 When SEO is requested for a Vite or plain React app:
 
-| Step | Action |
-|---|---|
-| 1 | Detect package manager from lockfile |
-| 2 | Run `npm install react-helmet-async@latest` (or pnpm/yarn/bun equivalent) |
-| 3 | Remove `react-helmet` if installed |
-| 4 | Add `HelmetProvider` to `src/main.tsx` or `src/main.jsx` |
-| 5 | Create `src/components/SEO.tsx` or `SEO.jsx` — see [react-helmet-async.md](react-helmet-async.md) |
-| 6 | Add `<SiteHelmetDefaults />` in `App.tsx` or `App.jsx` |
-| 7 | Add `<SEO />` to every indexable route |
-| 8 | Create `public/robots.txt`, `public/sitemap.xml`, `public/llms.txt` |
-| 9 | Warn if CSR-only — recommend prerendering for full crawlability |
+| Step | Action                                                                                            |
+| ---- | ------------------------------------------------------------------------------------------------- |
+| 1    | Detect package manager from lockfile                                                              |
+| 2    | Choose native React metadata or `react-helmet-async` based on the React version and project needs |
+| 3    | Remove `react-helmet` if installed                                                                |
+| 4    | If using Helmet, add `HelmetProvider` to `src/main.tsx` or `src/main.jsx`                         |
+| 5    | If using Helmet, create a shared `SEO.tsx` or `SEO.jsx` component                                 |
+| 6    | Add site-wide defaults and per-route metadata using the chosen approach                           |
+| 7    | Create `public/robots.txt` and `public/sitemap.xml` when applicable                               |
+| 8    | Add `public/llms.txt` only if the project has a specific use for it                               |
+| 9    | Warn if CSR-only — recommend prerendering or SSR when initial HTML matters                        |
 
 ---
 
 ## Stack Detection
 
-| Signal | Stack |
-|---|---|
-| `app/layout.tsx` or `next.config.js` | Next.js — [app-router.md](app-router.md) or [pages-router.md](pages-router.md) |
-| `vite.config.ts` + `index.html` | Vite + React — this file |
-| `react-scripts` in `package.json` dependencies | CRA — this file |
+| Signal                                         | Stack                                                                          |
+| ---------------------------------------------- | ------------------------------------------------------------------------------ |
+| `app/layout.tsx` or `next.config.js`           | Next.js — [app-router.md](app-router.md) or [pages-router.md](pages-router.md) |
+| `vite.config.ts` + `index.html`                | Vite + React — this file                                                       |
+| `react-scripts` in `package.json` dependencies | CRA — this file                                                                |
 
 ---
 
 ## Client-Side Rendering Warning
 
 A default Vite SPA renders an empty `<div id="root">` in the initial HTML.
-Some crawlers may not execute JavaScript.
+Some crawlers, social fetchers, and link unfurlers may not execute JavaScript.
 
-**Still install `react-helmet-async@latest`** — it handles:
-- Social sharing previews (OG / Twitter)
-- Crawlers that execute JavaScript (Googlebot)
-- Correct tab titles for users
+React 19 can manage document metadata from JSX, while `react-helmet-async` is
+useful for React 16–18 and for projects that need its API or SSR context. Neither
+choice turns a client-only SPA into server-rendered HTML.
 
 **Also warn** when CSR-only and ranking matters. Recommend prerendering
 (`vite-ssg`), or migration to Next.js / Astro / Remix.
 
-| Mode | Crawlability |
-|---|---|
-| CSR only (default Vite) | Limited for non-JS crawlers |
-| Prerendered / SSR | Good — Helmet tags appear in page source |
+| Mode                    | Crawlability                             |
+| ----------------------- | ---------------------------------------- |
+| CSR only (default Vite) | Limited for non-JS crawlers              |
+| Prerendered / SSR       | Good — Helmet tags appear in page source |
 
 ---
 
@@ -117,17 +121,17 @@ Create `public/sitemap.xml`:
 
 ```ts
 // scripts/generate-sitemap.ts
-import { writeFileSync } from 'fs'
+import { writeFileSync } from "fs";
 
-const SITE_URL = 'https://example.com'
-const routes = ['', '/about', '/services']
+const SITE_URL = "https://example.com";
+const routes = ["", "/about", "/services"];
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${routes.map((r) => `  <url><loc>${SITE_URL}${r}</loc></url>`).join('\n')}
-</urlset>`
+${routes.map((r) => `  <url><loc>${SITE_URL}${r}</loc></url>`).join("\n")}
+</urlset>`;
 
-writeFileSync('public/sitemap.xml', xml)
+writeFileSync("public/sitemap.xml", xml);
 ```
 
 ---
@@ -153,11 +157,11 @@ See [geo.md](geo.md) for AI crawler rules.
 
 ## GEO on Vite/React
 
-| Asset | Location |
-|---|---|
-| `llms.txt` | `public/llms.txt` |
-| `/ai` page | React route with `<SEO />` + JSON-LD |
-| AI crawlers | `public/robots.txt` |
+| Asset       | Location                                                              |
+| ----------- | --------------------------------------------------------------------- |
+| `llms.txt`  | `public/llms.txt` when the project deliberately adopts the convention |
+| `/ai` page  | React route with `<SEO />` + JSON-LD                                  |
+| AI crawlers | `public/robots.txt`                                                   |
 
 ---
 
@@ -174,7 +178,7 @@ After prerendering, verify Helmet tags appear in View Page Source.
 ## Validation
 
 See [validation.md](validation.md). Also confirm:
-- `react-helmet-async@latest` in `package.json`
-- `HelmetProvider` wraps app root
-- `SiteHelmetDefaults` in `App.tsx`
-- `<SEO />` on every public route
+
+- The chosen metadata approach matches the React version and rendering model
+- `HelmetProvider` wraps the app root when `react-helmet-async` is used
+- Shared defaults and per-route metadata cover every public route

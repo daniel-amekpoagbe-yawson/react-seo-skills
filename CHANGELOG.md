@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-08
+
+### Added
+
+- Astro support for shared layout metadata, static and on-demand rendering,
+  content collections, `@astrojs/sitemap`, robots files, and JSON-LD.
+
+### Updated
+
+- Audited SEO and AI-search guidance against current Next.js, React 19,
+  react-helmet-async, Google Search, and llms.txt documentation.
+- Corrected App Router metadata API guidance and made React metadata choices
+  version-aware.
+- Made `llms.txt`, `/ai`, and service-specific AI crawler rules optional instead
+  of universal requirements.
+- Removed the implication that FAQ structured data guarantees a Google rich
+  result.
+
 ## [0.0.8] - 2026-06-12
 
 ### Added
@@ -66,10 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Support for these stacks is planned. Track or claim them via a GitHub issue
 before starting — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-- **`0.1.0` — Astro support.** `skill/references/astro.md` covering the
-  Astro `<head>`, content collections metadata, `@astrojs/sitemap`, `robots.txt`,
-  and JSON-LD patterns.
-- **`0.2.0` — TanStack Start support.** `skill/references/tanstack-start.md`
+- **`0.4.0` — TanStack Start support.** `skill/references/tanstack-start.md`
   covering route-level `head()` metadata, server routes for sitemap/robots, and
   JSON-LD.
 
@@ -86,7 +101,8 @@ before starting — see [CONTRIBUTING.md](CONTRIBUTING.md).
 - Zero-dependency installer (`bin/install.js`) supporting Cursor, Claude Code,
   and Codex, with `--global` and `--force` options.
 
-[Unreleased]: https://github.com/daniel-amekpoagbe/react-seo-skills/compare/v0.0.8...HEAD
+[Unreleased]: https://github.com/daniel-amekpoagbe/react-seo-skills/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/daniel-amekpoagbe/react-seo-skills/compare/v0.0.8...v0.3.0
 [0.0.8]: https://github.com/daniel-amekpoagbe/react-seo-skills/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/daniel-amekpoagbe/react-seo-skills/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/daniel-amekpoagbe/react-seo-skills/compare/v0.0.5...v0.0.6

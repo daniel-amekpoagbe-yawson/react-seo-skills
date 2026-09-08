@@ -11,23 +11,23 @@ without checking.
 - [ ] Title and meta description present on every indexable route
 - [ ] Canonical URL is absolute and matches the live URL
 - [ ] Open Graph image resolves (1200×630 recommended)
-- [ ] JSON-LD passes Rich Results Test with zero errors
+- [ ] JSON-LD matches visible content and passes the relevant validator; rich-result eligibility depends on the schema type and current search feature availability
 - [ ] `sitemap.xml` is accessible and lists all public routes
 - [ ] `robots.txt` is accessible and references the sitemap
-- [ ] `llms.txt` is accessible (if GEO is in scope)
+- [ ] `llms.txt` is accessible if the project intentionally adopts that emerging convention
 
 ---
 
 ## Tools
 
-| What | Tool |
-|---|---|
-| Meta tags & Open Graph | https://www.opengraph.xyz |
-| Structured data | https://search.google.com/test/rich-results |
-| Schema.org syntax | https://validator.schema.org |
-| Sitemap XML | https://www.xml-sitemaps.com/validate-xml-sitemap.html |
-| Indexing & coverage | https://search.google.com/search-console |
-| Raw HTML (Vite/SPA) | View Page Source — confirm tags exist before JS runs |
+| What                   | Tool                                                   |
+| ---------------------- | ------------------------------------------------------ |
+| Meta tags & Open Graph | https://www.opengraph.xyz                              |
+| Structured data        | https://search.google.com/test/rich-results            |
+| Schema.org syntax      | https://validator.schema.org                           |
+| Sitemap XML            | https://www.xml-sitemaps.com/validate-xml-sitemap.html |
+| Indexing & coverage    | https://search.google.com/search-console               |
+| Raw HTML (Vite/SPA)    | View Page Source — confirm tags exist before JS runs   |
 
 ---
 
@@ -47,10 +47,10 @@ Core Web Vitals affect ranking. After SEO work, also check:
 
 ## Common Failures
 
-| Symptom | Likely cause |
-|---|---|
-| OG image missing | Relative URL without `metadataBase` (Next.js) or missing absolute URL |
-| JSON-LD errors | Missing required fields, wrong `@type`, relative `url` or `image` |
-| Sitemap 404 | File not in `public/` (Vite) or missing `app/sitemap.ts` (Next.js) |
-| Meta tags missing in source | CSR-only SPA — tags set only after JavaScript runs |
-| Duplicate titles | Missing per-route metadata on dynamic routes |
+| Symptom                     | Likely cause                                                          |
+| --------------------------- | --------------------------------------------------------------------- |
+| OG image missing            | Relative URL without `metadataBase` (Next.js) or missing absolute URL |
+| JSON-LD errors              | Missing required fields, wrong `@type`, relative `url` or `image`     |
+| Sitemap 404                 | File not in `public/` (Vite) or missing `app/sitemap.ts` (Next.js)    |
+| Meta tags missing in source | CSR-only SPA — tags set only after JavaScript runs                    |
+| Duplicate titles            | Missing per-route metadata on dynamic routes                          |

@@ -12,10 +12,14 @@ request. Peer dependency: `react` ^16.6.0 || ^17.0.0 || ^18.0.0 || ^19.0.0.
 
 1. **Match project language** — see [language.md](language.md). Examples below
    use TypeScript; adapt to `.jsx`/`.js` with no types for JavaScript projects.
-2. **Install with `@latest`:** `npm install react-helmet-async@latest`
+2. **Install the current compatible major:** `npm install react-helmet-async`
+   (the current published major is 3). Avoid changing a project's dependency
+   major automatically; inspect its React version and lockfile first.
 3. **Named imports only** — no default export since v1.0.0:
    `import { Helmet, HelmetProvider } from 'react-helmet-async'`
-4. **Always wrap the app** in `<HelmetProvider>` — required on client and server.
+4. **Wrap the app** in `<HelmetProvider>` when using this package — required on
+   client and server. A new React 19 app may not need this package at all if
+   native document metadata is sufficient.
 5. **Never use `react-helmet`** — it relies on `react-side-effect`, which is not
    thread-safe and is unmaintained.
 6. **Use `<Helmet>` per route** for title, meta, link, and script tags.
@@ -32,17 +36,17 @@ request. Peer dependency: `react` ^16.6.0 || ^17.0.0 || ^18.0.0 || ^19.0.0.
 
 Detect the project's package manager and run:
 
-| Lockfile | Command |
-|---|---|
-| `pnpm-lock.yaml` | `pnpm add react-helmet-async@latest` |
-| `yarn.lock` | `yarn add react-helmet-async@latest` |
-| `bun.lock` / `bun.lockb` | `bun add react-helmet-async@latest` |
-| `package-lock.json` / none | `npm install react-helmet-async@latest` |
+| Lockfile                   | Command                          |
+| -------------------------- | -------------------------------- |
+| `pnpm-lock.yaml`           | `pnpm add react-helmet-async`    |
+| `yarn.lock`                | `yarn add react-helmet-async`    |
+| `bun.lock` / `bun.lockb`   | `bun add react-helmet-async`     |
+| `package-lock.json` / none | `npm install react-helmet-async` |
 
 If `react-helmet` is installed, remove it first:
 
 ```bash
-npm uninstall react-helmet && npm install react-helmet-async@latest
+npm uninstall react-helmet && npm install react-helmet-async
 ```
 
 ---
@@ -51,36 +55,33 @@ npm uninstall react-helmet && npm install react-helmet-async@latest
 
 ```tsx
 // src/main.tsx
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { HelmetProvider } from 'react-helmet-async'
-import App from './App'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
+import App from "./App";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <HelmetProvider>
       <App />
     </HelmetProvider>
-  </StrictMode>
-)
+  </StrictMode>,
+);
 ```
 
 Per the official docs, `Helmet` goes inside your app tree — not in `main.tsx`:
 
 ```tsx
 // src/App.tsx
-import { Helmet } from 'react-helmet-async'
+import { Helmet } from "react-helmet-async";
 
 export default function App() {
   return (
     <>
-      <Helmet
-        defaultTitle="Site Name"
-        titleTemplate="%s — Site Name"
-      />
+      <Helmet defaultTitle="Site Name" titleTemplate="%s — Site Name" />
       {/* routes */}
     </>
-  )
+  );
 }
 ```
 
@@ -89,7 +90,7 @@ export default function App() {
 ## Per-Page Metadata
 
 ```tsx
-import { Helmet } from 'react-helmet-async'
+import { Helmet } from "react-helmet-async";
 
 export default function AboutPage() {
   return (
@@ -99,14 +100,17 @@ export default function AboutPage() {
         <meta name="description" content="Learn about our team and mission." />
         <link rel="canonical" href="https://example.com/about" />
         <meta property="og:title" content="About Us — Site Name" />
-        <meta property="og:description" content="Learn about our team and mission." />
+        <meta
+          property="og:description"
+          content="Learn about our team and mission."
+        />
         <meta property="og:url" content="https://example.com/about" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
       <main>{/* content */}</main>
     </>
-  )
+  );
 }
 ```
 
@@ -117,14 +121,14 @@ renders as `About Us — Site Name`.
 
 ## Helmet Props Reference
 
-| Prop | Purpose |
-|---|---|
-| `titleTemplate` | Format string — `%s` replaced by child `<title>` (e.g. `"%s — Site Name"`) |
-| `defaultTitle` | Fallback when no child `<title>` is set |
-| `prioritizeSeoTags` | SSR only (React 16–18): surfaces title, canonical, OG tags early in `<head>` |
-| `htmlAttributes` | Attributes on `<html>` — DOM manipulation even on React 19 |
-| `bodyAttributes` | Attributes on `<body>` — DOM manipulation even on React 19 |
-| `onChangeClientState` | Callback when head state changes (React 16–18) |
+| Prop                  | Purpose                                                                      |
+| --------------------- | ---------------------------------------------------------------------------- |
+| `titleTemplate`       | Format string — `%s` replaced by child `<title>` (e.g. `"%s — Site Name"`)   |
+| `defaultTitle`        | Fallback when no child `<title>` is set                                      |
+| `prioritizeSeoTags`   | SSR only (React 16–18): surfaces title, canonical, OG tags early in `<head>` |
+| `htmlAttributes`      | Attributes on `<html>` — DOM manipulation even on React 19                   |
+| `bodyAttributes`      | Attributes on `<body>` — DOM manipulation even on React 19                   |
+| `onChangeClientState` | Callback when head state changes (React 16–18)                               |
 
 ---
 
@@ -138,11 +142,11 @@ otherwise break out of the tag (see [structured-data.md](structured-data.md)):
 <Helmet>
   <script type="application/ld+json">
     {JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
-      name: 'Company Name',
-      url: 'https://example.com',
-    }).replace(/</g, '\\u003c')}
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Company Name",
+      url: "https://example.com",
+    }).replace(/</g, "\\u003c")}
   </script>
 </Helmet>
 ```
@@ -169,10 +173,8 @@ Server template order:
 
 ```html
 <head>
-  ${helmet.title.toString()}
-  ${helmet.priority.toString()}
-  ${helmet.meta.toString()}
-  ${helmet.link.toString()}
+  ${helmet.title.toString()} ${helmet.priority.toString()}
+  ${helmet.meta.toString()} ${helmet.link.toString()}
   ${helmet.script.toString()}
 </head>
 ```
@@ -188,18 +190,18 @@ Pass a `context` object to `HelmetProvider`. After `renderToString`, read helmet
 state from context (React 16–18 only):
 
 ```tsx
-import { renderToString } from 'react-dom/server'
-import { HelmetProvider } from 'react-helmet-async'
+import { renderToString } from "react-dom/server";
+import { HelmetProvider } from "react-helmet-async";
 
-const helmetContext = {}
+const helmetContext = {};
 
 const html = renderToString(
   <HelmetProvider context={helmetContext}>
     <App />
-  </HelmetProvider>
-)
+  </HelmetProvider>,
+);
 
-const { helmet } = helmetContext
+const { helmet } = helmetContext;
 
 const page = `<!DOCTYPE html>
 <html ${helmet.htmlAttributes.toString()}>
@@ -213,7 +215,7 @@ const page = `<!DOCTYPE html>
   <body ${helmet.bodyAttributes.toString()}>
     <div id="root">${html}</div>
   </body>
-</html>`
+</html>`;
 ```
 
 > **React 19 SSR:** `title`, `meta`, and `link` inside `<Helmet>` are included in
@@ -225,10 +227,10 @@ const page = `<!DOCTYPE html>
 
 ## React Version Behavior
 
-| React | `Helmet` behavior | `HelmetProvider` |
-|---|---|---|
+| React   | `Helmet` behavior                                      | `HelmetProvider`                     |
+| ------- | ------------------------------------------------------ | ------------------------------------ |
 | 16.6–18 | Collects instances, deduplicates, updates DOM manually | Required — manages per-request state |
-| 19+ | Renders native JSX; React hoists tags to `<head>` | Transparent passthrough |
+| 19+     | Renders native JSX; React hoists tags to `<head>`      | Transparent passthrough              |
 
 v3+ detects the React version at runtime. The same `<Helmet>` API works on all
 supported versions — no code changes needed when upgrading React.
@@ -240,9 +242,9 @@ supported versions — no code changes needed when upgrading React.
 For SSR emulation on React 16–18:
 
 ```tsx
-import { HelmetProvider } from 'react-helmet-async'
+import { HelmetProvider } from "react-helmet-async";
 
-HelmetProvider.canUseDOM = false
+HelmetProvider.canUseDOM = false;
 ```
 
 No effect on React 19 — `HelmetProvider` is a passthrough.
@@ -258,34 +260,34 @@ the full agent workflow. Use `SEO.tsx` for TypeScript, `SEO.jsx` for JavaScript.
 
 ```tsx
 // src/components/SEO.tsx
-import { Helmet } from 'react-helmet-async'
+import { Helmet } from "react-helmet-async";
 
-const SITE_NAME = 'Site Name'
-const TITLE_TEMPLATE = `%s — ${SITE_NAME}`
-const DEFAULT_OG_IMAGE = 'https://example.com/og/default.png'
+const SITE_NAME = "Site Name";
+const TITLE_TEMPLATE = `%s — ${SITE_NAME}`;
+const DEFAULT_OG_IMAGE = "https://example.com/og/default.png";
 
 type SEOProps = {
-  title: string
-  description: string
-  canonical: string
-  ogImage?: string
-  ogType?: 'website' | 'article'
-  noIndex?: boolean
-  jsonLd?: Record<string, unknown> | Record<string, unknown>[]
-  hrefLangs?: Array<{ lang: string; href: string }>
-}
+  title: string;
+  description: string;
+  canonical: string;
+  ogImage?: string;
+  ogType?: "website" | "article";
+  noIndex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  hrefLangs?: Array<{ lang: string; href: string }>;
+};
 
 export function SEO({
   title,
   description,
   canonical,
   ogImage = DEFAULT_OG_IMAGE,
-  ogType = 'website',
+  ogType = "website",
   noIndex = false,
   jsonLd,
   hrefLangs,
 }: SEOProps) {
-  const fullTitle = `${title} — ${SITE_NAME}`
+  const fullTitle = `${title} — ${SITE_NAME}`;
 
   return (
     <Helmet prioritizeSeoTags>
@@ -312,25 +314,23 @@ export function SEO({
 
       {jsonLd && (
         <script type="application/ld+json">
-          {JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+          {JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
         </script>
       )}
     </Helmet>
-  )
+  );
 }
 
 // Site-wide defaults — render once in App.tsx:
 export function SiteHelmetDefaults() {
-  return (
-    <Helmet defaultTitle={SITE_NAME} titleTemplate={TITLE_TEMPLATE} />
-  )
+  return <Helmet defaultTitle={SITE_NAME} titleTemplate={TITLE_TEMPLATE} />;
 }
 ```
 
 Usage in `App.tsx`:
 
 ```tsx
-import { SiteHelmetDefaults } from './components/SEO'
+import { SiteHelmetDefaults } from "./components/SEO";
 
 export default function App() {
   return (
@@ -338,7 +338,7 @@ export default function App() {
       <SiteHelmetDefaults />
       {/* routes */}
     </>
-  )
+  );
 }
 ```
 
@@ -346,23 +346,23 @@ export default function App() {
 
 ```jsx
 // src/components/SEO.jsx
-import { Helmet } from 'react-helmet-async'
+import { Helmet } from "react-helmet-async";
 
-const SITE_NAME = 'Site Name'
-const TITLE_TEMPLATE = `%s — ${SITE_NAME}`
-const DEFAULT_OG_IMAGE = 'https://example.com/og/default.png'
+const SITE_NAME = "Site Name";
+const TITLE_TEMPLATE = `%s — ${SITE_NAME}`;
+const DEFAULT_OG_IMAGE = "https://example.com/og/default.png";
 
 export function SEO({
   title,
   description,
   canonical,
   ogImage = DEFAULT_OG_IMAGE,
-  ogType = 'website',
+  ogType = "website",
   noIndex = false,
   jsonLd,
   hrefLangs,
 }) {
-  const fullTitle = `${title} — ${SITE_NAME}`
+  const fullTitle = `${title} — ${SITE_NAME}`;
 
   return (
     <Helmet prioritizeSeoTags>
@@ -389,17 +389,15 @@ export function SEO({
 
       {jsonLd && (
         <script type="application/ld+json">
-          {JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+          {JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
         </script>
       )}
     </Helmet>
-  )
+  );
 }
 
 export function SiteHelmetDefaults() {
-  return (
-    <Helmet defaultTitle={SITE_NAME} titleTemplate={TITLE_TEMPLATE} />
-  )
+  return <Helmet defaultTitle={SITE_NAME} titleTemplate={TITLE_TEMPLATE} />;
 }
 ```
 
@@ -414,10 +412,10 @@ Usage on a page:
 
 ## Why Not react-helmet?
 
-| | `react-helmet` | `react-helmet-async` |
-|---|---|---|
-| Maintenance | Abandoned (archived) | Actively maintained (v3+) |
-| Thread safety | No (`react-side-effect`) | Yes (`HelmetProvider` context) |
-| React 19 | Broken / hydration issues | Native hoisting support |
-| SSR | `Helmet.renderStatic()` | `context` prop on `HelmetProvider` |
-| Default export | Yes (legacy) | Named exports only |
+|                | `react-helmet`            | `react-helmet-async`               |
+| -------------- | ------------------------- | ---------------------------------- |
+| Maintenance    | Abandoned (archived)      | Actively maintained (v3+)          |
+| Thread safety  | No (`react-side-effect`)  | Yes (`HelmetProvider` context)     |
+| React 19       | Broken / hydration issues | Native hoisting support            |
+| SSR            | `Helmet.renderStatic()`   | `context` prop on `HelmetProvider` |
+| Default export | Yes (legacy)              | Named exports only                 |
