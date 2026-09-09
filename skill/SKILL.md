@@ -1,11 +1,11 @@
 ---
 name: react-seo-skills
 description: >
-   Guides SEO and AI-search visibility for Next.js, Astro, and React apps in Cursor,
+  Guides SEO and AI-search visibility for Next.js, Astro, and React apps in Cursor,
   Claude Code, and Codex. Use when setting up metadata, Open Graph, Twitter cards,
-   Schema.org JSON-LD, sitemaps, robots.txt, optional llms.txt, keyword research,
+  Schema.org JSON-LD, sitemaps, robots.txt, optional llms.txt, keyword research,
   clustering, auditing SEO, improving discoverability, or setting up structured
-   data. Covers Next.js App Router, Pages Router, Astro, and Vite + React SPAs. Matches
+  data. Covers Next.js App Router, Pages Router, Astro, and Vite + React SPAs. Matches
   JavaScript or TypeScript to the project language.
 ---
 
